@@ -10,7 +10,7 @@ export default function ButtonComponent(props: any) {
         <View style={styles.row}>
                 {/* btn Editar Perfil */}
                 <TouchableOpacity style={styles.button} activeOpacity={0.6}>
-                    <Text style={styles.text} >Editar Perfil</Text>
+                    <Text style={styles.text} >Editar Perfilito</Text>
                 </TouchableOpacity> 
 
                 {/* btn Publicaciones Guardadas */}
