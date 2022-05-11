@@ -36,7 +36,6 @@ export default function UserPictureAndFollows(props: any) {
       </Svg>
     )
   }
-
         return (
           <View>
             <View style={styles.container}>
