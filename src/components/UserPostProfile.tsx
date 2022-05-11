@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 import { FakeImagesData } from '../util/FakePicturesData'
+import FastImage from 'react-native-fast-image'
 
 //feed de profile
 export default function UserPostProfile(props: any) {
@@ -15,14 +16,17 @@ export default function UserPostProfile(props: any) {
         )
     }
 
+    const renderItem = ({item}: any) => <Post image={item.url} name={item.name} />;
+    const keyExtractor = (item: any, index: any) => index.toString();
+
     return(
         //SafeAreaView
         <View style={styles.container}>
             <FlatList  
                 style={{flex:1}}
                 data={FakeImagesData}
-                renderItem={({item}) => <Post image={item.url} name={item.name}/>}
-                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
                 showsHorizontalScrollIndicator={false}
                 numColumns={3}
                 scrollEnabled={false}
@@ -33,12 +37,12 @@ export default function UserPostProfile(props: any) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        //justifyContent: "space-between",
-        alignContent: "center",
+        //flex: 1,
+        justifyContent: "space-between",
+        //alignContent: "center",
         marginVertical: 20,
         //paddingTop: 10,
-        //marginLeft:10,
+        //marginLeft:-5
     },
     container2: {
         //flex: 1,

@@ -43,7 +43,7 @@ export default function PostListHome(props: any) {
                     {/* Opcion Like */}
                     <TouchableOpacity style={{flexDirection: 'row'}} activeOpacity={0.6}>
                         <AntDesign name= 'hearto' size={24} color="#4b58a6"  style={{marginLeft: 10}}/>
-                        <Text style={{fontWeight: 'bold', marginLeft: 10}}>{props.likes}</Text>
+                        <Text style={{fontWeight: 'bold', marginLeft: 10 }}>{props.likes}</Text>
                     </TouchableOpacity>
                     {/* Opcion Comentarios */}
                     <TouchableOpacity style={{flexDirection: 'row', marginLeft: 25}} activeOpacity={0.6}>
