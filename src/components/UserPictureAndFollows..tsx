@@ -40,7 +40,7 @@ export default function UserPictureAndFollows(props: any) {
         return (
           <View>
             <View style={styles.container}>
-              <TouchableOpacity>
+              <TouchableOpacity style={styles.containerPicture}>
                 <SvgProfilePicture />
                 <Image
                     style={styles.userPicture}
@@ -91,6 +91,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingHorizontal: 15,
     },
+    containerPicture: {
+      marginTop: 10,
+  },
     followsContainer: {
         alignContent: "center",
         justifyContent: "center",

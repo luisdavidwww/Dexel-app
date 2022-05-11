@@ -2,9 +2,10 @@ import React from "react";
 import { View, Image, Text, StyleSheet, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 import { FakeImagesData } from '../util/FakePicturesData'
 
+//feed de profile
 export default function UserPostProfile(props: any) {
 
-    const Story = (props: any) => {
+    const Post = (props: any) => {
         return(
             <TouchableOpacity>
                 <View>
@@ -15,25 +16,34 @@ export default function UserPostProfile(props: any) {
     }
 
     return(
-        <SafeAreaView style={styles.container}>
+        //SafeAreaView
+        <View style={styles.container}>
             <FlatList  
+                style={{flex:1}}
                 data={FakeImagesData}
-                renderItem={({item}) => <Story image={item.url} name={item.name}/>}
+                renderItem={({item}) => <Post image={item.url} name={item.name}/>}
                 keyExtractor={(item, index) => index.toString()}
                 showsHorizontalScrollIndicator={false}
                 numColumns={3}
                 scrollEnabled={false}
             />
-        </SafeAreaView>
+        </View >
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: "space-between",
+        flex: 1,
+        //justifyContent: "space-between",
         alignContent: "center",
-        paddingTop: 10,
-        marginLeft:10,
+        marginVertical: 20,
+        //paddingTop: 10,
+        //marginLeft:10,
+    },
+    container2: {
+        //flex: 1,
+        //marginVertical: 20,
+        alignContent: "center",
     },
     image: {
         width: 130,

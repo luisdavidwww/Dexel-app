@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StackScreenProps } from '@react-navigation/stack'
 
-
+//screen
 import Home from '../screens/Home';
 import Explore from '../screens/Explore';
 import New from '../screens/New';
@@ -15,6 +15,7 @@ import Profile from '../screens/Profile';
 import Configuracion from '../screens/Configuracion';
 import Privacidad from '../screens/Privacidad';
 
+//components
 import HeaderHome from "../components/HeaderHome";
 import ProfileHeader from "../components/ProfileHeader";
 
