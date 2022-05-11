@@ -37,10 +37,11 @@ export default function UserPostProfile(props: any) {
 
 const styles = StyleSheet.create({
     container: {
-        //flex: 1,
+        flex: 1,
+        alignItems: 'center', 
+        marginHorizontal: 5,
         justifyContent: "space-between",
-        //alignContent: "center",
-        marginVertical: 20,
+        marginVertical: 10,
         //paddingTop: 10,
         //marginLeft:-5
     },

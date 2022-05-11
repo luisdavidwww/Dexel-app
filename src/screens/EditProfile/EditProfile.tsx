@@ -1,11 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
 //import { styles } from '../theme/appTheme';
 
 
 export default function EditProfile() {
+
+  useEffect(() => {
+    navigation.setOptions({
+        title: 'Editar Perfil',
+        //headerBackTitle: 'Atras'
+    })
+}, [])
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -74,7 +84,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: "100%",
-    marginTop:100,
+    marginTop:5,
     justifyContent: "flex-start"
   },
   containerOp: {

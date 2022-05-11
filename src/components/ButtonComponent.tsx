@@ -1,15 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/core';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 //Botones de accion del Perfil de usuario
 export default function ButtonComponent(props: any) {
 
+    const navigation = useNavigation();
+
     return (
         <View style={styles.row}>
                 {/* btn Editar Perfil */}
-                <TouchableOpacity style={styles.button} activeOpacity={0.6}>
+                <TouchableOpacity onPress={ () => navigation.navigate('EditProfile')} style={styles.button} activeOpacity={0.6}>
                     <Text style={styles.text} >Editar Perfil</Text>
                 </TouchableOpacity> 
 

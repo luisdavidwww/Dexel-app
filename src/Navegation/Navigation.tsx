@@ -14,6 +14,7 @@ import Notifications from '../screens/Notifications';
 import Profile from '../screens/Profile';
 import Configuracion from '../screens/Configuracion';
 import Privacidad from '../screens/Privacidad';
+import EditProfile from '../screens/EditProfile/EditProfile';
 
 //components
 import HeaderHome from "../components/HeaderHome";
@@ -98,6 +99,7 @@ export const StackNavegator = () => {
       <Stack.Screen name="Configuracion"  component={ Configuracion } />
       <Stack.Screen name="New2"  component={ StackNew }/>
       <Stack.Screen name="Privacidad"  component={ Privacidad } />
+      <Stack.Screen name="EditProfile"  component={ EditProfile } />
     </Stack.Navigator>
   );
 }

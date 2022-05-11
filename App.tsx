@@ -14,7 +14,7 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <EditProfile/>
+      <StackNavegator/>
     </NavigationContainer>
     </Provider>  
     
