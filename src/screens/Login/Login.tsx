@@ -19,8 +19,7 @@ export const Login = () => (
       </TouchableOpacity>
 
       <TouchableOpacity style={{
-          ...styles.button,
-          backgroundColor:'#545cda', width: '95%'}}
+          ...styles.button, width: '95%'}}
           onPress={()=>alert('hola')}>
         <Text style={{...styles.buttonText,color:'white'}}>Registrate</Text>
       </TouchableOpacity>
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: 'center',
     width: '100%',
-    backgroundColor: 'Black',
+    //backgroundColor: 'black',
     padding:50,
     marginTop:'35%',
     marginBottom:'35%',
@@ -54,6 +53,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       paddingVertical:15,
       borderRadius:10,
+      backgroundColor:'#545cda'
   },
   buttonText: {
       textAlign: 'center'
