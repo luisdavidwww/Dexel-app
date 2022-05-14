@@ -15,7 +15,7 @@ const App = () => {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <StackNavegator/>
+      <Login/>
     </NavigationContainer>
     </Provider>  
     

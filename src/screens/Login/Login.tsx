@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Button, View, SafeAreaView, Text, Alert, TextInput } from 'react-native';
+import { StyleSheet, Button, View, SafeAreaView, Text, Alert, TextInput, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 //import { TextInput } from 'react-native-web';
 import { useNavigation } from '@react-navigation/native'
@@ -8,14 +8,40 @@ import { useNavigation } from '@react-navigation/native'
 export const Login = () => (
   <SafeAreaView style={styles.container}>
     <View style={styles.container2}>
+      
+      <View style={styles.containerLogo} >
+        <Image style={styles.logo} source={require('../../stactic/img/dexel.png')}/>
+      </View>
+    
       <Text style={styles.titulo}>Bienvenido</Text>
-      <Text style={styles.subtitulo}>Sing in to your account</Text>
+      <Text style={styles.subtitulo}>Ingresa a tu cuenta</Text>
 
-      <TextInput placeholder="Username" style={styles.input}/>
-      <TextInput placeholder="Password" style={styles.input}/>
+      {/* Usuario */}
+      <TextInput        placeholder="Ingrese su Email" 
+                        placeholderTextColor="gray"
+                        keyboardType="email-address"
+
+                        style={styles.input}
+
+                        selectionColor="#4b58a6"
+
+                        autoCapitalize="none"
+                        autoCorrect={ false }/>
+
+      {/* Contraseña */}
+      <TextInput        placeholder="contraseña"
+                        placeholderTextColor="gray"
+                        style={styles.input}
+                        secureTextEntry
+
+                        selectionColor="#4b58a6"
+
+                        autoCapitalize="none"
+                        autoCorrect={ false }
+                    />
 
       <TouchableOpacity>
-        <Text style={{...styles.subtitulo2,color:'blue'}}>Forgot your Password?</Text>
+        <Text style={{...styles.subtitulo2,color:'black', fontWeight: 'bold',}}>¿Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={{
@@ -25,7 +51,10 @@ export const Login = () => (
       </TouchableOpacity>
 
       <TouchableOpacity>
-        <Text style={{...styles.subtitulo3,color:'blue'}}>Don't hace account? create</Text>
+        <View style={{flexDirection: "row", justifyContent: "center"}}>
+        <Text style={{...styles.subtitulo3,color:'black'}}>¿No tienes una cuenta? </Text>
+        <Text style={{...styles.subtitulo4,color:'blue'}}>Registrate</Text>
+        </View>    
       </TouchableOpacity>
     </View>
   </SafeAreaView>
@@ -59,7 +88,7 @@ const styles = StyleSheet.create({
       textAlign: 'center'
   },
   input: {
-    borderColor:'gray',
+    borderColor:'#4b58a6',
     //padding: 10,
     borderWidth: 1,
     width: '90%',
@@ -69,7 +98,9 @@ const styles = StyleSheet.create({
     height: 50,
     paddingStart:15,
     marginLeft:'5%',
-    marginTop: '4%'
+    marginTop: '4%',
+    color:'#4b58a6',
+    fontSize: 12,
   },
   titulo: {
     fontSize:30,
@@ -79,7 +110,8 @@ const styles = StyleSheet.create({
   subtitulo: {
     fontSize: 15,
     color: 'gray',
-    marginLeft:'5%'
+    marginLeft:'5%',
+    marginTop:10
   },
   subtitulo2: {
     fontSize: 15,
@@ -89,6 +121,28 @@ const styles = StyleSheet.create({
   subtitulo3: {
     fontSize: 15,
     color: 'black',
-    margin:10,
+    //marginStart:10,
+    marginTop:10,
   },
+  subtitulo4: {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold',
+    //marginStart:10,
+    marginTop:10,
+  },
+  containerLogo: {
+    justifyContent:'center',
+    alignItems:'center',
+    width: '100%',
+  },
+  logo: {
+    width: 200,
+    height: 56,
+},
+inputField: {
+  color:'#4b58a6',
+  fontSize: 20,
+  paddingBottom: 9
+},
 });
