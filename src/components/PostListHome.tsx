@@ -51,7 +51,6 @@ export default function PostListHome(props: any) {
                         <Text style={{fontWeight: 'bold', marginLeft: 10}}>Comentarios</Text>
                     </TouchableOpacity>    
                 </View>
-
                 {/* Opcion Guardar */}
                 <TouchableOpacity onPress={() => agregarFavoritos()} activeOpacity={0.6}>
                     <Ionicons name={estado ? 'bookmark' : 'bookmark-outline'} size={28} color="#4b58a6" style={{marginRight: 10}}/>

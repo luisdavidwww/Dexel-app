@@ -22,8 +22,8 @@ export default function ButtonComponent(props: any) {
                     name={'bookmark-outline'} size={27} color="black"/>
                 </TouchableOpacity>
 
-                {/* btn Ajustes */}
-                <TouchableOpacity style={styles.button2} activeOpacity={0.6}>
+                {/* btn Configuración */}
+                <TouchableOpacity style={styles.button2} onPress={ () => navigation.navigate('Setting')} activeOpacity={0.6}>
                      <Ionicons style={styles.contentbtn}
                      name={'settings'} size={27} color="black"/>
                 </TouchableOpacity>       

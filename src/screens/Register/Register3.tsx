@@ -3,23 +3,16 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 
 
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const Registrar3 = () => (
+
+interface Props extends StackScreenProps<any, any> {}
+
+
+export const Register3 = ({ navigation }: Props) => {
+
+  return(
     <View style={styles.container}>
-
-      <View style={{flexDirection: 'row'}}>
-
-        <View style={{flex: 1}}>
-          <TouchableOpacity onPress={()=> alert('hola')} style={{...styles.button2}}>
-          <Text style={{color:'black', fontSize: 60}}>←</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 1}}>
-          <Text style={{...styles.subtitulo, justifyContent: 'center'}}>Registrarse</Text>
-        </View>
-      </View>
-
 
       <Text style={styles.subtitulo2}>¿Cuál es tu Correo eletrónico?</Text>
       <TextInput
@@ -35,13 +28,14 @@ export const Registrar3 = () => (
       <TouchableOpacity style={{
           ...styles.button,
           backgroundColor:'blue', width: '95%'}}
-          onPress={()=>alert('hola')}>
+          onPress={()=> navigation.navigate('Register4')}>
         <Text style={{...styles.buttonText,color:'white'}}>Siguiente</Text>
       </TouchableOpacity>
 
       <StatusBar style="auto" />
     </View>
-  );
+  )
+  };
 
 const styles = StyleSheet.create({
   container: {

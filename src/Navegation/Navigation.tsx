@@ -1,6 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import { View, Text } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { AuthContext } from '../context/AuthContext';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,15 +17,25 @@ import Profile from '../screens/Profile';
 import Configuracion from '../screens/Configuracion';
 import Privacidad from '../screens/Privacidad';
 import EditProfile from '../screens/EditProfile/EditProfile';
+import Setting from '../screens/EditProfile/Setting';
+import { Register } from '../screens/Register/Register';
+import { Register2 } from '../screens/Register/Register2';
+import { Register3 } from '../screens/Register/Register3';
+import { Register4 } from '../screens/Register/Register4';
+import { Login } from '../screens/Login/Login';
+import {LoadingScreen} from '../screens/LoadingScreen';
+
 
 //components
 import HeaderHome from "../components/HeaderHome";
 import ProfileHeader from "../components/ProfileHeader";
+import { enableScreens } from "react-native-screens";
 
 //interface Props extends StackScreenProps<any, any>{};
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
 
 const TabButtonNavigation = () => {
     return (
@@ -79,6 +91,17 @@ const TabButtonNavigation = () => {
 }
 
 export const StackNavegator = () => {
+
+
+
+  //contexto
+  const { status } = useContext( AuthContext );
+
+  //pagina de carga
+  if ( status === 'checking' ) return <LoadingScreen />
+
+
+
   return (
     <Stack.Navigator
     initialRouteName="Home1"
@@ -86,20 +109,42 @@ export const StackNavegator = () => {
       //tabBarShowLabel: false,
       headerStyle: {
         elevation: 100,
-        shadowColor: 'transparent'
+        shadowColor: 'transparent',
       },
       cardStyle: {
         backgroundColor: 'white'
       },
       headerTitleAlign: 'center',
   })}
-      
     >
-      <Stack.Screen name="Home1"  options={{headerShown: false}} component={ TabButtonNavigation } />
-      <Stack.Screen name="Configuracion"  component={ Configuracion } />
-      <Stack.Screen name="New2"  component={ StackNew }/>
-      <Stack.Screen name="Privacidad"  component={ Privacidad } />
-      <Stack.Screen name="EditProfile"  component={ EditProfile } />
+
+
+{
+        (status !== 'authenticated') 
+          ? (
+            <>
+              <Stack.Screen name="Login" options={{headerShown: false}} component={ Login } />
+              <Stack.Screen name="Register"  options={{headerShown: false}} component={ Register } />
+              <Stack.Screen name="Register2" options={{ headerTitle: 'Registrar' }} component={ Register2 } />
+              <Stack.Screen name="Register3" options={{ headerTitle: 'Registrar' }}  component={ Register3 } />
+              <Stack.Screen name="Register4" options={{ headerTitle: 'Registrar' }}  component={ Register4 } />
+            </>
+          )
+          : (
+            <>
+              <Stack.Screen name="Home1"  options={{headerShown: false}} component={ TabButtonNavigation } />
+              <Stack.Screen name="Configuracion"  component={ Configuracion } />
+              <Stack.Screen name="New2"  component={ StackNew }/>
+              <Stack.Screen name="Privacidad"  component={ Privacidad } />
+              <Stack.Screen name="EditProfile"  component={ EditProfile } />
+              <Stack.Screen name="Setting"  component={ Setting } />
+            </>
+          )
+      }
+
+
+      
+      
     </Stack.Navigator>
   );
 }
@@ -150,7 +195,6 @@ const StackNew = () => {
     </Stack.Navigator>
   );
 }
-
 const StackNotifications = () => {
   return (
     <Stack.Navigator

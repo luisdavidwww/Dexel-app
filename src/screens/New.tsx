@@ -12,7 +12,7 @@ export default function New({ navigation }: Props) {
   
   useEffect(() => {
     navigation.setOptions({
-        title: 'Yorgelis',
+        title: 'Marihec',
         headerBackTitle: 'Atras'
     })
 }, [])

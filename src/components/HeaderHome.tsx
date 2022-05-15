@@ -17,7 +17,7 @@ export default function HeaderHome() {
         <View style={styles.container} >
 
             {/* logo de la app */}
-            <TouchableOpacity onPress={ () => navigation.navigate('Privacidad')} activeOpacity={0.6}>
+            <TouchableOpacity onPress={ () => navigation.navigate('Login')} activeOpacity={0.6}>
                 <Image style={styles.logo}
                        source={require('../stactic/img/dexel.png')}/>
             </TouchableOpacity>

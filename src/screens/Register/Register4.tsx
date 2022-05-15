@@ -1,26 +1,17 @@
 import React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
-import { Login } from '../Login';
+
+import { StackScreenProps } from '@react-navigation/stack';
 
 
+interface Props extends StackScreenProps<any, any> {}
 
-export const Registrar4 = () => (
+export const Register4 = ({ navigation }: Props) => {
+
+
+  return(
     <View style={styles.container}>
-
-      <View style={{flexDirection: 'row'}}>
-
-        <View style={{flex: 1}}>
-          <TouchableOpacity onPress={()=> this.Login} style={{...styles.button2}}>
-          <Text style={{color:'black', fontSize: 60}}>←</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{flex: 1}}>
-          <Text style={{...styles.subtitulo, justifyContent: 'center'}}>Registrarse</Text>
-        </View>
-      </View>
-
 
       <Text style={styles.subtitulo2}>Crea un nombre de usuario</Text>
       <Text style={styles.subtitulo3}>Podrás cambiarlo más tarde</Text>
@@ -38,7 +29,8 @@ export const Registrar4 = () => (
 
       <StatusBar style="auto" />
     </View>
-  );
+  )
+  };
 
 const styles = StyleSheet.create({
   container: {
