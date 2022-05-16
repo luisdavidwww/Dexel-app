@@ -40,6 +40,19 @@ export const styles = StyleSheet.create({
       marginStart:-7,
       marginBottom:10
     },
+    containerIndScreen: {
+      alignContent: "center",
+      justifyContent: 'center',
+      marginHorizontal:20
+    },
+    containerfield: {
+      alignContent: "center",
+      justifyContent: 'center',
+      width: '100%',
+      //padding:20,
+      marginVertical:9,
+      //marginHorizontal:3
+    },
     logo: {
       width: 200,
       height: 56,
@@ -60,6 +73,18 @@ export const styles = StyleSheet.create({
       borderRadius:10,
       height: 50,
       paddingStart:15,
+      marginTop: 15,
+      color:'#4b58a6',
+      fontSize: 12,
+    },
+    inputDescripcion: {
+      borderColor:'#4b58a6',
+      borderWidth: 1,
+      width: '100%',
+      borderRadius:10,
+      height: 150,
+      paddingStart:15,
+      paddingBottom:110,
       marginTop: 15,
       color:'#4b58a6',
       fontSize: 12,

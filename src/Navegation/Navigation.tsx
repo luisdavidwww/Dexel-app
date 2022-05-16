@@ -24,17 +24,31 @@ import { Register3 } from '../screens/Register/Register3';
 import { Register4 } from '../screens/Register/Register4';
 import { Login } from '../screens/Login/Login';
 import {LoadingScreen} from '../screens/LoadingScreen';
-
+import EditNameUser from '../screens/EditProfile/indScreens/EditNameUser';
+import EditName from '../screens/EditProfile/indScreens/EditName';
+import EditSurName from '../screens/EditProfile/indScreens/EditSurName';
+import EditDescription from '../screens/EditProfile/indScreens/EditDescription'
 
 //components
 import HeaderHome from "../components/HeaderHome";
 import ProfileHeader from "../components/ProfileHeader";
 import { enableScreens } from "react-native-screens";
 
-//interface Props extends StackScreenProps<any, any>{};
+
+//parametros globales para la navegacion
+export type RootStackParamList = {
+  EditNameUser: { id: string };
+  EditName: { id: string };
+  EditSurName: { id: string };
+  EditDescription: { id: string };
+  Setting: { id: string };
+  EditProfile: { id: string };
+};
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+
+
 
 
 const TabButtonNavigation = () => {
@@ -93,7 +107,6 @@ const TabButtonNavigation = () => {
 export const StackNavegator = () => {
 
 
-
   //contexto
   const { status } = useContext( AuthContext );
 
@@ -136,7 +149,15 @@ export const StackNavegator = () => {
               <Stack.Screen name="Configuracion"  component={ Configuracion } />
               <Stack.Screen name="New2"  component={ StackNew }/>
               <Stack.Screen name="Privacidad"  component={ Privacidad } />
+
+              {/* Screens Editar Perfil */}
               <Stack.Screen name="EditProfile"  component={ EditProfile } />
+              <Stack.Screen name="EditNameUser"  component={ EditNameUser } />
+              <Stack.Screen name="EditName"  component={ EditName } />
+              <Stack.Screen name="EditSurName"  component={ EditSurName } />
+              <Stack.Screen name="EditDescription"  component={ EditDescription } />
+
+              {/* Screens Configuración */}
               <Stack.Screen name="Setting"  component={ Setting } />
             </>
           )

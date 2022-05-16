@@ -24,4 +24,7 @@ export interface Usuario {
     correo: string;
     uid:    string;
     img?:   string;
+    nombreReal: string;
+    apellido: string;
+    fechaNac: Date;
 }

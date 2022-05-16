@@ -19,7 +19,7 @@ export default function ProfileHeader() {
     return (
         <View style={styles.container}>
             {/* Nombre de Usuario */}
-            <Text style={styles.title}>{ JSON.stringify( user?.nombre ) }</Text>
+            <Text style={styles.title}>{ JSON.stringify( user?.nombre ).replace(/["']/g, "") }</Text>
             {/* Menú de Opciones */}
             <TouchableOpacity activeOpacity={0.6} style={{flexDirection: 'row'}}>
                 <MaterialIcons name="menu-outline" color="black" size={28}></MaterialIcons>

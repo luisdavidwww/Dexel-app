@@ -1,18 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from "../Navegation/Navigation";
 
 import Ionicons from '@expo/vector-icons/Ionicons';
+
+
+
+ 
 
 //Botones de accion del Perfil de usuario
 export default function ButtonComponent(props: any) {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (
         <View style={styles.row}>
                 {/* btn Editar Perfil */}
-                <TouchableOpacity onPress={ () => navigation.navigate('EditProfile')} style={styles.button} activeOpacity={0.6}>
+                <TouchableOpacity onPress={ () => navigation.navigate('EditProfile', {id: 'editProfile'})} style={styles.button} activeOpacity={0.6}>
                     <Text style={styles.text} >Editar Perfil</Text>
                 </TouchableOpacity> 
 
@@ -23,7 +29,7 @@ export default function ButtonComponent(props: any) {
                 </TouchableOpacity>
 
                 {/* btn Configuración */}
-                <TouchableOpacity style={styles.button2} onPress={ () => navigation.navigate('Setting')} activeOpacity={0.6}>
+                <TouchableOpacity style={styles.button2} onPress={ () => navigation.navigate('Setting', {id: 'settings'})} activeOpacity={0.6}>
                      <Ionicons style={styles.contentbtn}
                      name={'settings'} size={27} color="black"/>
                 </TouchableOpacity>       
