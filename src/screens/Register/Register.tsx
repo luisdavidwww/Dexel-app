@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,Image,  Text, View, TextInput, Button, Platform, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Alert, Image,  Text, View, TextInput, Button, Platform, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { useForm } from '../../hooks/useForm';
+import { AuthContext } from '../../context/AuthContext';
 
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -13,15 +14,32 @@ interface Props extends StackScreenProps<any, any> {}
 export const Register = ( { navigation }: Props) => {
 
 
+   const { signUp, errorMessage, removeError } = useContext( AuthContext );
+
    const { email, password, name, onChange } = useForm({
       name: '',
       email: '',
       password: '' 
      });
 
+     useEffect(() => {
+      if( errorMessage.length === 0 ) return;
+
+      Alert.alert( 'Registro incorrecto', errorMessage,[{
+          text: 'Ok',
+          onPress: removeError
+      }]);
+
+  }, [ errorMessage ])
+
     const onRegister = () => {
     console.log({email, password, name});
-    //Keyboard.dismiss();
+    Keyboard.dismiss();
+    signUp({
+      nombre: name,
+      correo: email,
+      password
+  });
 }
 
 

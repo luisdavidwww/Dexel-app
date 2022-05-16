@@ -90,9 +90,39 @@ export const AuthProvider = ({ children }: any)=> {
 
     };
     
-    const signUp = async( { nombre, correo, password }: RegisterData ) => {};
 
-    const logOut = async() => {};
+    {/* Registrar Usuario */}
+    const signUp = async( { nombre, correo, password }: RegisterData ) => {
+
+        try {
+         
+            const { data } = await DexelApi.post<LoginResponse>('/usuarios', { correo, password, nombre } );
+            dispatch({ 
+                type: 'signUp',
+                payload: {
+                    token: data.token,
+                    user: data.usuario
+                }
+            });
+
+            await AsyncStorage.setItem('token', data.token );
+
+        } catch (error) {
+            dispatch({ 
+                type: 'addError', 
+                payload: error.response.data.errors[0].msg || 'Revise la información'
+            });
+        }
+
+    };
+
+
+
+    {/* Cerrar Sesión */}
+    const logOut = async() => {
+        await AsyncStorage.removeItem('token');
+        dispatch({ type: 'logout' });
+    };
 
     const removeError = () => {
         dispatch({ type: 'removeError' });

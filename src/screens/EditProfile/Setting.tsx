@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { AuthContext } from '../../context/AuthContext';
 
 import { styles } from '../../theme/optionsTheme';
 
@@ -13,13 +14,15 @@ import { Fontisto } from '@expo/vector-icons';
 
 export default function EditProfile(props: any) {
 
+  const { logOut } = useContext( AuthContext );
+
   useEffect(() => {
     navigation.setOptions({
         title: 'Configuración'
     })
 }, [])
 
-  const { user } = props;   
+  //const { user } = props;   
 
   const navigation = useNavigation();
 
@@ -58,7 +61,7 @@ export default function EditProfile(props: any) {
       </TouchableOpacity>
 
       {/* Logout */}
-      <TouchableOpacity activeOpacity={0.6}>
+      <TouchableOpacity activeOpacity={0.6} onPress={ logOut }>
         <View style={styles.containerOp}>
             <View style={styles.containerOp} >
                <Fontisto name="close" size={24} color="#4b58a6" style={styles.icon2} />
