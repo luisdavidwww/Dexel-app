@@ -8,12 +8,7 @@ import { useForm } from '../../../hooks/useForm';
 import { styles } from '../../../theme/LoginRegisterTheme';
 
 //icon
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import { Fontisto } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 
 
@@ -49,28 +44,44 @@ const onRegister = () => {
     <View style={styles.containerIndScreen}>
        {/* input nombre de Usuario */}
       <View style={styles.containerfield}>
-         <TextInput     placeholder="Nombre"
+         <TextInput 
+                        placeholder="Ingrese su Nombre"
                         placeholderTextColor="gray"
-                        keyboardType="email-address"
+                        underlineColorAndroid="#4b58a6"
+                        editable
+                        maxLength={30}
+                        
+                        style={styles.input2}
 
-                        style={styles.input}
+                        selectionColor="#9caae8"
 
-                        selectionColor="#4b58a6"
-
-                        onChangeText={ (value) => onChange(value, 'email') }
-                        value={ email }
-                        onSubmitEditing={ onRegister }
+                        onChangeText={ (value) => onChange(value, 'name') }
+                        value={ name }
+                        //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"
-                        autoCorrect={ false }/>
+                        autoCorrect={ false }
+                    />
 
       </View>
 
+      {/* Consejo */}
+      <View style={styles.containerConsejo}>
+        <View style={styles.containerIcon}>
+          <MaterialIcons name="info-outline" size={18} color="black" />
+        </View>
+        <View style={styles.containerfield}>
+          <Text style={styles.consejo} >
+            Indícanos tu nombre de pila.
+          </Text>
+        </View>
+      </View>
+      
       {/* btn Guardar Cambios */}
       <View style={styles.containerfield}>
          <TouchableOpacity style={{
                ...styles.button, width: '100%'}}
-               onPress={ onRegister }
+               //onPress={ onRegister }
                >
             <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
          </TouchableOpacity>

@@ -1,7 +1,7 @@
 import { Usuario } from '../interfaces/appInterfaces';
 
 export interface AuthState {
-    status: 'checking' | 'authenticated' | 'not-authenticated';
+    status: 'update' | 'sinUpdate';
     token: string | null;
     errorMessage: string;
     user: Usuario | null;
@@ -50,7 +50,6 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 token: null,
                 user: null
             }
-
 
         default:
             return state;

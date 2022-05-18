@@ -10,11 +10,7 @@ type AuthContextProps = {
     token: string | null;
     user: Usuario | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: ( registerData: RegisterData ) => void;
-    signIn: ( loginData: LoginData ) => void;
-    logOut: () => void;
-    removeError: () => void;
-    //updateName: ( usuario: Usuario ) => void;
+    UpdateName: ( Usuario: Usuario ) => void;
 }
 
 
@@ -142,7 +138,6 @@ export const AuthProvider = ({ children }: any)=> {
     const removeError = () => {
         dispatch({ type: 'removeError' });
     };
-
 
     return (
         <AuthContext.Provider value={{

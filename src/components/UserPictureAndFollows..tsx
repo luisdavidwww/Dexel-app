@@ -3,9 +3,17 @@ import {View,Text,Image,StyleSheet,TouchableOpacity,} from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg"
 
 
+declare module 'react-native-svg' {
+  export interface SvgProps {
+    xmlns?: string;
+    xmlnsXlink?: string;
+  }
+}
+
 export default function UserPictureAndFollows(props: any) {
 
   const { user } = props;
+
 
   function SvgProfilePicture() {
     return (

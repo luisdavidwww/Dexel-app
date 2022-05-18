@@ -17,11 +17,11 @@ export const styles = StyleSheet.create({
       marginVertical:10
     },
     fontOp: {
-        fontSize: 17,
+        fontSize: 15,
         marginBottom: 10,
     },
     fontOp2: {
-      fontSize: 15,
+      fontSize: 14,
       marginBottom: 10,
       color: 'gray'
   },

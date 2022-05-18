@@ -48,7 +48,12 @@ export type RootStackParamList = {
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-
+declare module 'react-native-svg' {
+  export interface SvgProps {
+    xmlns?: string;
+    xmlnsXlink?: string;
+  }
+}
 
 
 const TabButtonNavigation = () => {
@@ -59,7 +64,7 @@ const TabButtonNavigation = () => {
         //tabBarShowLabel: false,
         
         tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+          let iconName: string | undefined;
           if(route.name === 'Home2') {
               iconName = focused ? 'home' : 'home-outline';
           } else if(route.name === 'Explore2') {

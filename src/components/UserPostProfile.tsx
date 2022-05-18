@@ -22,7 +22,7 @@ export default function UserPostProfile(props: any) {
     return(
         //SafeAreaView
         <View style={styles.container}>
-            <FlatList  
+            <FlatList 
                 style={{flex:1}}
                 data={FakeImagesData}
                 renderItem={renderItem}

@@ -26,6 +26,7 @@
     "react-native-date-picker": "^4.2.1",
     "react-native-fast-image": "^8.5.11",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-masked-text": "^1.13.0",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-svg": "12.1.1",
