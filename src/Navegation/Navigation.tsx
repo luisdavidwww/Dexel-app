@@ -18,12 +18,13 @@ import Configuracion from '../screens/Configuracion';
 import Privacidad from '../screens/Privacidad';
 import EditProfile from '../screens/EditProfile/EditProfile';
 import Setting from '../screens/EditProfile/Setting';
+
+import { UserNavigator } from "./UserNavigation";
+
 import { Register } from '../screens/Register/Register';
-import { Register2 } from '../screens/Register/Register2';
-import { Register3 } from '../screens/Register/Register3';
-import { Register4 } from '../screens/Register/Register4';
 import { Login } from '../screens/Login/Login';
 import {LoadingScreen} from '../screens/LoadingScreen';
+
 import EditNameUser from '../screens/EditProfile/indScreens/EditNameUser';
 import EditName from '../screens/EditProfile/indScreens/EditName';
 import EditSurName from '../screens/EditProfile/indScreens/EditSurName';
@@ -143,9 +144,6 @@ export const StackNavegator = () => {
             <>
               <Stack.Screen name="Login" options={{headerShown: false}} component={ Login } />
               <Stack.Screen name="Register"  options={{headerShown: false}} component={ Register } />
-              <Stack.Screen name="Register2" options={{ headerTitle: 'Registrar' }} component={ Register2 } />
-              <Stack.Screen name="Register3" options={{ headerTitle: 'Registrar' }}  component={ Register3 } />
-              <Stack.Screen name="Register4" options={{ headerTitle: 'Registrar' }}  component={ Register4 } />
             </>
           )
           : (
@@ -157,7 +155,9 @@ export const StackNavegator = () => {
 
               {/* Screens Editar Perfil */}
               <Stack.Screen name="EditProfile"  component={ EditProfile } />
-              <Stack.Screen name="EditNameUser"  component={ EditNameUser } />
+              <Stack.Screen name="UserNavigator"  component={ UserNavigator } />
+              
+              <Stack.Screen name="EditNameUser"  component={ EditNameUser } /> 
               <Stack.Screen name="EditName"  component={ EditName } />
               <Stack.Screen name="EditSurName"  component={ EditSurName } />
               <Stack.Screen name="EditDescription"  component={ EditDescription } />

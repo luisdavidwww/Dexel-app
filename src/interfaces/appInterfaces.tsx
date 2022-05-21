@@ -27,4 +27,5 @@ export interface Usuario {
     nombreReal: string;
     apellido: string;
     fechaNac: Date;
+    descripcion: string;
 }

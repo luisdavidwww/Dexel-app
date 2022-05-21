@@ -4,6 +4,9 @@ import { AuthContext } from '../../../context/AuthContext';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from '../../../hooks/useForm';
 
+import { UserUpdateContext } from '../../../context/UserContext';
+import { StackScreenProps } from '@react-navigation/stack';
+import { UserStackParams } from '../../../Navegation/UserNavigation';
 
 import { styles } from '../../../theme/LoginRegisterTheme';
 
@@ -12,33 +15,47 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 
-export default function EditName(props: any) {
+interface Props extends StackScreenProps<UserStackParams, 'EditName'>{};
 
-  const { user, signUp, errorMessage, removeError } = useContext( AuthContext );
 
-  const navigation = useNavigation();
+export default function EditName({ navigation, route }: Props) {
 
-  const { email, password, name, onChange } = useForm({
-   name: '',
-   email: '',
-   password: '' 
-  });
 
+
+  //variables de las routas qyue llegan como parámetros
+  const { id = '', nameReal = '' } = route.params;
+
+  //métodos del contex tipo usuario
+  const { loadUserById  } = useContext( UserUpdateContext );
+
+  //variables de apoyo del useForm
+  const { nombre, onChange, setFormValue } = useForm({
+    _id: id,
+    nombre: nameReal 
+   });
+
+
+
+  //funciones que se activan al acceder a la pestaña
   useEffect(() => {
     navigation.setOptions({
         title: 'Nombre',
     })
-}, [])
+    }, [])
 
-const onRegister = () => {
-   console.log({email, password, name});
-   Keyboard.dismiss();
-   signUp({
-     nombre: name,
-     correo: email,
-     password
- });
-}
+
+
+  //creación de metodos locales
+  const loadUser = async() => {
+    if ( id.length === 0 ) return;
+    const user = await loadUserById( id );
+      setFormValue({
+        _id: user.uid,
+        nombre
+       })
+    }
+
+
 
   return (
     <View style={styles.containerIndScreen}>
@@ -55,8 +72,8 @@ const onRegister = () => {
 
                         selectionColor="#9caae8"
 
-                        onChangeText={ (value) => onChange(value, 'name') }
-                        value={ name }
+                        //onChangeText={ (value) => onChange(value, 'name') }
+                        value={ nombre }
                         //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"

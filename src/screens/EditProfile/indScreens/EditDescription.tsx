@@ -1,44 +1,54 @@
 import React, { useEffect, useContext } from 'react'
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput } from 'react-native';
-import { AuthContext } from '../../../context/AuthContext';
-import { useNavigation } from '@react-navigation/core';
 import { useForm } from '../../../hooks/useForm';
 
-//estilos
+import { UserUpdateContext } from '../../../context/UserContext';
+import { StackScreenProps } from '@react-navigation/stack';
+import { UserStackParams } from '../../../Navegation/UserNavigation';
+
 import { styles } from '../../../theme/LoginRegisterTheme';
 
 //icon
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';  
 
 
 
-export default function EditName(props: any) {
+interface Props extends StackScreenProps<UserStackParams, 'EditDescription'>{};
 
-  const { user, signUp, errorMessage, removeError } = useContext( AuthContext );
 
-  const navigation = useNavigation();
+export default function EditName({ navigation, route }: Props) {
 
-  const { email, password, name, onChange } = useForm({
-   name: '',
-   email: '',
-   password: '' 
+  //variables de las routas qyue llegan como parámetros
+  const { id = '', descripcion = '' } = route.params;
+
+  //métodos del contex tipo usuario, cargar usuario por Id
+  const { loadUserById  } = useContext( UserUpdateContext );
+
+  //variables de apoyo del useForm
+  const { onChange, setFormValue, descripcionn, form } = useForm({
+   _id: id,
+   descripcionn: descripcion 
   });
 
+
+  //funciones que se activan al acceder a la pestaña
   useEffect(() => {
     navigation.setOptions({
         title: 'Descripción',
     })
-}, [])
+  }, [])
 
-const onRegister = () => {
-   console.log({email, password, name});
-   Keyboard.dismiss();
-   signUp({
-     nombre: name,
-     correo: email,
-     password
- });
-}
+
+  //creación de metodos locales
+  const loadUser = async() => {
+      if ( id.length === 0 ) return;
+      const user = await loadUserById( id );
+        setFormValue({
+          _id: user.uid,
+          descripcionn
+           })
+        }
+
 
   return (
     <View style={styles.containerIndScreen}>
@@ -57,7 +67,7 @@ const onRegister = () => {
                         selectionColor="#9caae8"
 
                         //onChangeText={ (value) => onChange(value, 'name') }
-                        //value={ name }
+                        value={ descripcion }
                         //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"
@@ -82,13 +92,11 @@ const onRegister = () => {
       <View style={styles.containerfield}>
          <TouchableOpacity style={{
                ...styles.button, width: '100%'}}
-               onPress={ onRegister }
                >
             <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
          </TouchableOpacity>
       </View>
 
-      
 
     </View>
   )
