@@ -4,6 +4,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from "../../Navegation/Navigation";
 import { useNavigation } from '@react-navigation/core';
+import { useForm } from '../../hooks/useForm';
 
 import { styles } from '../../theme/optionsTheme';
 
@@ -34,6 +35,11 @@ export default function EditProfile({ navigation }: Props) {
   //métodos del contex tipo autentificador de Usuario 
   const { user } = useContext( AuthContext );
 
+  //variables de apoyo del useForm
+  const { onChange, img, form } = useForm({
+      img: ''
+  });
+
 
   //funciones que se activan al acceder a la pestaña
   useEffect(() => {
@@ -45,8 +51,21 @@ export default function EditProfile({ navigation }: Props) {
 
   return (
     <View style={styles.container}>
-      {/* Foto de Perfil */}
 
+       
+                        {/* Foto de Perfil */}
+                        {
+                          (img.length > 0) && (
+                            <Image 
+                              source={{ uri: img }}
+                              style={{
+                                marginTop: 20,
+                                width: '100%',
+                                height: 300
+                                }}
+                            />
+                          )
+                        }
 
       {/* Nombre de Usuario */}
       <TouchableOpacity onPress={ () => navigation.navigate('EditNameUser', { id:user?.uid, NameUser: user?.nombre} )} activeOpacity={0.6}>
@@ -77,14 +96,14 @@ export default function EditProfile({ navigation }: Props) {
       </TouchableOpacity>
 
       {/* Apellido */}
-      <TouchableOpacity onPress={ () => navigation.navigate('EditSurName', { id:user?.uid, apellido: user?.apellido} )} activeOpacity={0.6}>
+      <TouchableOpacity onPress={ () => navigation.navigate('EditSurName', { id:user?.uid, Surname: user?.apellido} )} activeOpacity={0.6}>
         <View style={styles.containerOp}>
             <View style={styles.containerOp} >
                <SimpleLineIcons name="user-following" size={21} color="black" style={styles.icon3} />
                <Text style={styles.fontOp} >Apellido</Text>
             </View>
            <View style={styles.containerOp} >
-              <Text style={styles.fontOp2} >{ JSON.stringify( user?.apellido ).replace(/["']/g, "") }</Text>
+              <Text style={styles.fontOp2}>{ JSON.stringify( user?.apellido ).replace(/["']/g, "") }</Text>
               <AntDesign name="right" size={18} color="gray" style={styles.icon} />
            </View> 
         </View>
@@ -112,7 +131,7 @@ export default function EditProfile({ navigation }: Props) {
                <Text style={styles.fontOp} >Descripción corta</Text>
             </View>
            <View style={styles.containerOp} >
-              <Text style={styles.fontOp2} >{ JSON.stringify( user?.descripcion ).replace(/["']/g, "") }</Text>
+              <Text style={styles.fontOp3} numberOfLines={1} >{ JSON.stringify( user?.descripcion ).replace(/["']/g, "") }</Text>
               <AntDesign name="right" size={18} color="gray" style={styles.icon} />
            </View>            
         </View>

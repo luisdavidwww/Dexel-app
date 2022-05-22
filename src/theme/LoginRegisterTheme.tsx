@@ -82,6 +82,12 @@ export const styles = StyleSheet.create({
         borderRadius:10,
         backgroundColor:'#545cda'
     },
+    buttonDisable:{
+      alignSelf: 'center',
+      paddingVertical:15,
+      borderRadius:10,
+      backgroundColor:'#bcbcbb'
+  },
     buttonText: {
         textAlign: 'center'
     },
@@ -112,8 +118,8 @@ export const styles = StyleSheet.create({
       borderRadius:10,
       height: 150,
       paddingStart:15,
-      paddingEnd:15,
-      paddingBottom:110,
+      paddingEnd:20,
+      paddingBottom:10,
       marginTop: 10,
       color:'black',
       //color:'#4b58a6',

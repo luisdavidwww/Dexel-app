@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, Button } from 'react-native';
 import { useForm } from '../../../hooks/useForm';
 
 import { UserUpdateContext } from '../../../context/UserContext';
@@ -18,11 +18,11 @@ interface Props extends StackScreenProps<UserStackParams, 'EditDescription'>{};
 
 export default function EditName({ navigation, route }: Props) {
 
-  //variables de las routas qyue llegan como parámetros
+  //variables de las routas que llegan como parámetros
   const { id = '', descripcion = '' } = route.params;
 
-  //métodos del contex tipo usuario, cargar usuario por Id
-  const { loadUserById  } = useContext( UserUpdateContext );
+  //métodos del contex tipo usuario
+  const { loadUserById, updateUserDescription  } = useContext( UserUpdateContext );
 
   //variables de apoyo del useForm
   const { onChange, setFormValue, descripcionn, form } = useForm({
@@ -37,9 +37,13 @@ export default function EditName({ navigation, route }: Props) {
         title: 'Descripción',
     })
   }, [])
+  useEffect(() => {
+    loadUser();
+  }, [])
 
 
-  //creación de metodos locales
+
+  //creación de metodos locales, aqui carga la información de descripción que tenga el usuario
   const loadUser = async() => {
       if ( id.length === 0 ) return;
       const user = await loadUserById( id );
@@ -50,28 +54,39 @@ export default function EditName({ navigation, route }: Props) {
         }
 
 
+  // Metodo para Actualizar la Descripción
+  const UpdateDescription = async() => {
+        if( descripcionn.length > 0 ) {            
+          updateUserDescription( id, descripcionn );
+        }
+         else {
+        }
+    }
+
+
   return (
     <View style={styles.containerIndScreen}>
        {/* input nombre de Usuario */}
       <View style={styles.containerfield}>
           <TextInput 
-                        placeholder="¿Cómo te describes?"
+                        placeholder="Cuentanos como te describes a ti mismo"
+                        value={ descripcionn }
                         placeholderTextColor="gray"
                         underlineColorAndroid="#4b58a6"
-                        multiline={true}
                         editable
-                        maxLength={80}
+                        maxLength={200}
                         
                         style={styles.inputDescripcion}
 
                         selectionColor="#9caae8"
 
-                        //onChangeText={ (value) => onChange(value, 'name') }
-                        value={ descripcion }
+                        onChangeText={ (value) => onChange(value, 'descripcionn') }
                         //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"
                         autoCorrect={ false }
+                        multiline={true}
+                        
                     />
 
       </View>
@@ -90,14 +105,30 @@ export default function EditName({ navigation, route }: Props) {
 
       {/* btn Guardar Cambios */}
       <View style={styles.containerfield}>
-         <TouchableOpacity style={{
-               ...styles.button, width: '100%'}}
-               >
-            <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
-         </TouchableOpacity>
+
+
+      {descripcion === descripcionn
+      ? <>
+                  <TouchableOpacity style={{
+                        ...styles.buttonDisable, width: '100%'}}
+                        disabled={true}
+                        >
+                     <Text style={{...styles.buttonText,color:'#60605f'}}>Guardar</Text>
+                  </TouchableOpacity>
+        </>
+      : <>
+                 <TouchableOpacity style={{
+                        ...styles.button, width: '100%'}}
+                        onPress={ UpdateDescription }
+                        >
+                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
+                 </TouchableOpacity>
+      
+        </>    
+    }
+
       </View>
-
-
+      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
   )
 }

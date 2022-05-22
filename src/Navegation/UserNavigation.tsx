@@ -22,7 +22,7 @@ export type UserStackParams = {
     //EditNameUser: undefined,
     EditNameUser: { id?: string, NameUser?: string }
     EditName: { id?: string, nameReal?: string },
-    EditSurName: { id?: string, apellido?: string },
+    EditSurName: { id?: string, Surname?: string },
     EditDescription: { id?: string, descripcion?: string },
 }
 

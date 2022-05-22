@@ -29,9 +29,9 @@ export default function EditName({ navigation, route }: Props) {
   const { loadUserById  } = useContext( UserUpdateContext );
 
   //variables de apoyo del useForm
-  const { nombre, onChange, setFormValue } = useForm({
+  const { nombreReal, onChange, setFormValue, form } = useForm({
     _id: id,
-    nombre: nameReal 
+    nombreReal: nameReal 
    });
 
 
@@ -45,13 +45,13 @@ export default function EditName({ navigation, route }: Props) {
 
 
 
-  //creación de metodos locales
+  //creación de metodos locales, aqui carga la información de nombre real que tenga el usuario
   const loadUser = async() => {
     if ( id.length === 0 ) return;
     const user = await loadUserById( id );
       setFormValue({
         _id: user.uid,
-        nombre
+        nombreReal
        })
     }
 
@@ -63,6 +63,7 @@ export default function EditName({ navigation, route }: Props) {
       <View style={styles.containerfield}>
          <TextInput 
                         placeholder="Ingrese su Nombre"
+                        value={ nombreReal }
                         placeholderTextColor="gray"
                         underlineColorAndroid="#4b58a6"
                         editable
@@ -72,8 +73,7 @@ export default function EditName({ navigation, route }: Props) {
 
                         selectionColor="#9caae8"
 
-                        //onChangeText={ (value) => onChange(value, 'name') }
-                        value={ nombre }
+                        onChangeText={ (value) => onChange(value, 'nombreReal') }
                         //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"
@@ -104,7 +104,7 @@ export default function EditName({ navigation, route }: Props) {
          </TouchableOpacity>
       </View>
 
-      
+      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
 
     </View>
   )

@@ -45,11 +45,11 @@ export default function EditName({ navigation, route }: Props) {
   }, [])
     
     
-  //creación de metodos locales
+  //creación de metodos locales, aqui carga la información de nombre de usuario que tenga el usuario
   const loadUser = async() => {
       if ( id.length === 0 ) return;
       const user = await loadUserById( id );
-      console.log (user)
+      //console.log (user)
         }
 
   return (

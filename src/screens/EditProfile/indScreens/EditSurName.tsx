@@ -20,15 +20,15 @@ export default function EditName({ navigation, route }: Props) {
 
   
   //variables de las routas qyue llegan como parámetros
-  const { id = '', apellido = '' } = route.params;
+  const { id = '', Surname = '' } = route.params;
 
   //métodos del contex tipo usuario, cargar usuario por Id
   const { loadUserById  } = useContext( UserUpdateContext );
 
   //variables de apoyo del useForm
-  const { onChange, setFormValue } = useForm({
+  const { apellido, onChange, setFormValue, form } = useForm({
    _id: id,
-   apellido: apellido 
+   apellido: Surname 
   });
 
 
@@ -41,7 +41,7 @@ export default function EditName({ navigation, route }: Props) {
   }, [])
 
 
-//creación de metodos locales
+//creación de metodos locales, aqui carga la información de apellido que tenga el usuario
   const loadUser = async() => {
       if ( id.length === 0 ) return;
       const user = await loadUserById( id );
@@ -58,6 +58,7 @@ export default function EditName({ navigation, route }: Props) {
       <View style={styles.containerfield}>
           <TextInput 
                         placeholder="Ingrese su Apellido"
+                        value={ apellido }
                         placeholderTextColor="gray"
                         underlineColorAndroid="#4b58a6"
                         editable
@@ -67,8 +68,7 @@ export default function EditName({ navigation, route }: Props) {
 
                         selectionColor="#9caae8"
 
-                        //onChangeText={ (value) => onChange(value, 'name') }
-                        value={ apellido }
+                        onChangeText={ (value) => onChange(value, 'apellido') }
                         //onSubmitEditing={ onRegister }
 
                         autoCapitalize="none"
@@ -97,7 +97,7 @@ export default function EditName({ navigation, route }: Props) {
          </TouchableOpacity>
       </View>
 
-      
+      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
 
     </View>
   )

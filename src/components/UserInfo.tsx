@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useContext } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity, } from "react-native";
+
+import { AuthContext } from '../context/AuthContext';
 
 //Información del Usuario
 export default function UserInfo(props: any) {
 
-    const { user } = props;
+    //datos estaticos
+    //const { user } = props;
+
+    //métodos del contex tipo autentificador de Usuario 
+    const { user } = useContext( AuthContext );
+    
 
     return(
-        <View style={styles.container}>          
-            <Text style={{}}>{user.about}</Text>   
-            <Text style={{paddingTop: 5, marginBottom: 10}}>
+        <View style={styles.container}>     
+             
+            {/* Descripción de Usuario */}
+            <Text style={{}}>{ JSON.stringify( user?.descripcion ).replace(/["']/g, "") }</Text>   
+
+            {/* 
+             <Text style={{paddingTop: 5, marginBottom: 10}}>
                 Followed by
-                <Text style={styles.textBold}> {user.followedBy[0]} </Text>
+                <Text style={styles.textBold}> 500 </Text>
                 and
-                <Text style={styles.textBold}> {user.followedBy[1]} </Text>
-            </Text>   
+                <Text style={styles.textBold}> 25 </Text>
+             </Text>  
+
+             */}
                    
         </View>
     )

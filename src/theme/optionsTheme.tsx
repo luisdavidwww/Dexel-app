@@ -23,8 +23,16 @@ export const styles = StyleSheet.create({
     fontOp2: {
       fontSize: 14,
       marginBottom: 10,
-      color: 'gray'
+      color: 'gray',
+      overflow: 'hidden',
   },
+  fontOp3: {
+    width:150,
+    fontSize: 14,
+    marginBottom: 10,
+    color: 'gray',
+    overflow: 'hidden',
+},
   fontLogout: {
     fontSize: 15,
     marginBottom: 10,
