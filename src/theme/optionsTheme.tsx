@@ -33,6 +33,13 @@ export const styles = StyleSheet.create({
     color: 'gray',
     overflow: 'hidden',
 },
+fontOp4: {
+  width:40,
+  fontSize: 14,
+  marginBottom: 10,
+  color: 'gray',
+  overflow: 'hidden',
+},
   fontLogout: {
     fontSize: 15,
     marginBottom: 10,

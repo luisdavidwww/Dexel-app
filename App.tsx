@@ -14,10 +14,11 @@ import { Provider } from 'react-redux';
 
 const AppState = ({ children }: any ) => {
   return (
+    
     <AuthProvider>
       <UserProvider>
       { children }
-      </UserProvider> 
+      </UserProvider>  
     </AuthProvider>
   )
 }

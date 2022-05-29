@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react'
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, RefreshControl } from 'react-native';
 import { AuthContext } from '../../../context/AuthContext';
 import { useNavigation } from '@react-navigation/core';
 import { useForm } from '../../../hooks/useForm';
@@ -22,17 +22,21 @@ export default function EditName({ navigation, route }: Props) {
 
 
 
+  //estado inicial para el pull to refresh
+  const [ isRefreshing, setIsRefreshing ] = useState( false );
+
   //variables de las routas qyue llegan como parámetros
   const { id = '', nameReal = '' } = route.params;
 
   //métodos del contex tipo usuario
-  const { loadUserById  } = useContext( UserUpdateContext );
+  const { loadUserById, updateUserNameReal  } = useContext( UserUpdateContext );
 
   //variables de apoyo del useForm
   const { nombreReal, onChange, setFormValue, form } = useForm({
     _id: id,
     nombreReal: nameReal 
    });
+
 
 
 
@@ -43,6 +47,19 @@ export default function EditName({ navigation, route }: Props) {
     })
     }, [])
 
+    useEffect(() => {
+      loadProductsFromBackend();
+      }, [])
+
+
+
+  //pull to refresh
+  const loadProductsFromBackend = async() => {
+    setIsRefreshing(true);
+    await loadUserById(id);
+    updateUserNameReal( id, nombreReal );
+    setIsRefreshing(false);
+    }
 
 
   //creación de metodos locales, aqui carga la información de nombre real que tenga el usuario
@@ -55,9 +72,29 @@ export default function EditName({ navigation, route }: Props) {
        })
     }
 
+    // Metodo para Actualizar el Apellido
+  const UpdateName = async() => {
+    if( nombreReal.length > 0 ) {            
+      await updateUserNameReal( id, nombreReal );
+      loadProductsFromBackend();
+    }
+     else {
+    }
+}
+
 
 
   return (
+
+    <ScrollView
+  refreshControl={
+    <RefreshControl 
+        refreshing={ isRefreshing }
+        onRefresh={ loadProductsFromBackend }
+    />
+      }
+  >
+
     <View style={styles.containerIndScreen}>
        {/* input nombre de Usuario */}
       <View style={styles.containerfield}>
@@ -74,7 +111,7 @@ export default function EditName({ navigation, route }: Props) {
                         selectionColor="#9caae8"
 
                         onChangeText={ (value) => onChange(value, 'nombreReal') }
-                        //onSubmitEditing={ onRegister }
+                        onSubmitEditing={ UpdateName }
 
                         autoCapitalize="none"
                         autoCorrect={ false }
@@ -96,16 +133,35 @@ export default function EditName({ navigation, route }: Props) {
       
       {/* btn Guardar Cambios */}
       <View style={styles.containerfield}>
-         <TouchableOpacity style={{
-               ...styles.button, width: '100%'}}
-               //onPress={ onRegister }
-               >
-            <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
-         </TouchableOpacity>
+
+
+      {nameReal === nombreReal
+      ? <>
+                  <TouchableOpacity style={{
+                        ...styles.buttonDisable, width: '100%'}}
+                        disabled={true}
+                        >
+                     <Text style={{...styles.buttonText,color:'#60605f'}}>Guardar</Text>
+                  </TouchableOpacity>
+        </>
+      : <>
+                 <TouchableOpacity style={{
+                        ...styles.button, width: '100%'}}
+                        onPress={ UpdateName }
+                        >
+                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>  
+                 </TouchableOpacity>
+      
+        </>    
+    }
+
       </View>
 
-      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
+        
 
+
+      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
+    </ScrollView>
   )
 }

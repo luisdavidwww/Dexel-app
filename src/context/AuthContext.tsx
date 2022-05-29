@@ -23,6 +23,7 @@ const authInicialState: AuthState = {
     status: 'checking',
     token: null,
     user: null,
+    usuario: null,
     errorMessage: ''
 }
 
@@ -34,9 +35,12 @@ export const AuthProvider = ({ children }: any)=> {
 
     const [ state, dispatch ] = useReducer( authReducer, authInicialState);
 
+
+    
     useEffect(() => {
         checkToken();
     }, [])
+
 
 
     //validacion de Token
@@ -90,6 +94,7 @@ export const AuthProvider = ({ children }: any)=> {
         }
 
     };
+
     
 
     {/* Registrar Usuario */}

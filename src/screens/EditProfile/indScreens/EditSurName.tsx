@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react'
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, RefreshControl } from 'react-native';
 import { useForm } from '../../../hooks/useForm';
 
 import { UserUpdateContext } from '../../../context/UserContext';
@@ -18,12 +18,17 @@ interface Props extends StackScreenProps<UserStackParams, 'EditSurName'>{};
 
 export default function EditName({ navigation, route }: Props) {
 
-  
+
+
+
+  //estado inicial para el pull to refresh
+  const [ isRefreshing, setIsRefreshing ] = useState( false );
+
   //variables de las routas qyue llegan como parámetros
   const { id = '', Surname = '' } = route.params;
 
   //métodos del contex tipo usuario, cargar usuario por Id
-  const { loadUserById  } = useContext( UserUpdateContext );
+  const { loadUserById, updateUserApellido  } = useContext( UserUpdateContext );
 
   //variables de apoyo del useForm
   const { apellido, onChange, setFormValue, form } = useForm({
@@ -33,12 +38,32 @@ export default function EditName({ navigation, route }: Props) {
 
 
 
+
+
   //funciones que se activan al acceder a la pestaña
   useEffect(() => {
     navigation.setOptions({
         title: 'Apellido',
     })
   }, [])
+
+  useEffect(() => {
+    loadProductsFromBackend()
+  }, [])
+
+
+
+
+
+  //pull to refresh
+  const loadProductsFromBackend = async() => {
+    setIsRefreshing(true);
+    await loadUserById(id);
+    updateUserApellido( id, apellido );
+    setIsRefreshing(false);
+}
+
+
 
 
 //creación de metodos locales, aqui carga la información de apellido que tenga el usuario
@@ -52,7 +77,30 @@ export default function EditName({ navigation, route }: Props) {
         }
 
 
+
+  // Metodo para Actualizar el Apellido
+  const UpdateApellido = async() => {
+    if( apellido.length > 0 ) {            
+      await updateUserApellido( id, apellido );
+      loadProductsFromBackend();
+    }
+     else {
+    }
+}
+
+
+
+
   return (
+
+    <ScrollView
+  refreshControl={
+    <RefreshControl 
+        refreshing={ isRefreshing }
+        onRefresh={ loadProductsFromBackend }
+    />
+      }
+  >
     <View style={styles.containerIndScreen}>
        {/* input de Apellido */}
       <View style={styles.containerfield}>
@@ -69,7 +117,7 @@ export default function EditName({ navigation, route }: Props) {
                         selectionColor="#9caae8"
 
                         onChangeText={ (value) => onChange(value, 'apellido') }
-                        //onSubmitEditing={ onRegister }
+                        onSubmitEditing={ UpdateApellido }
 
                         autoCapitalize="none"
                         autoCorrect={ false }
@@ -90,15 +138,37 @@ export default function EditName({ navigation, route }: Props) {
 
       {/* btn Guardar Cambios */}
       <View style={styles.containerfield}>
-         <TouchableOpacity style={{
-               ...styles.button, width: '100%'}}
-               >
-            <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
-         </TouchableOpacity>
+
+
+      {Surname === apellido
+      ? <>
+                  <TouchableOpacity style={{
+                        ...styles.buttonDisable, width: '100%'}}
+                        disabled={true}
+                        >
+                     <Text style={{...styles.buttonText,color:'#60605f'}}>Guardar</Text>
+                  </TouchableOpacity>
+        </>
+      : <>
+                 <TouchableOpacity style={{
+                        ...styles.button, width: '100%'}}
+                        onPress={ UpdateApellido }
+                        >
+                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>  
+                 </TouchableOpacity>
+      
+        </>    
+    }
+
       </View>
 
-      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
+        
 
+
+      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
+
+        
+  </ScrollView>
   )
 }

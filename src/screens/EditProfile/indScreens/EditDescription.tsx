@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, Button } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react'
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, Button, RefreshControl } from 'react-native';
 import { useForm } from '../../../hooks/useForm';
 
 import { UserUpdateContext } from '../../../context/UserContext';
@@ -17,6 +17,10 @@ interface Props extends StackScreenProps<UserStackParams, 'EditDescription'>{};
 
 
 export default function EditName({ navigation, route }: Props) {
+
+
+  //estado inicial para el pull to refresh
+  const [ isRefreshing, setIsRefreshing ] = useState( false );
 
   //variables de las routas que llegan como parámetros
   const { id = '', descripcion = '' } = route.params;
@@ -42,6 +46,13 @@ export default function EditName({ navigation, route }: Props) {
   }, [])
 
 
+  //pull to refresh
+  const loadProductsFromBackend = async() => {
+    setIsRefreshing(true);
+    await loadUserById(id);
+    updateUserDescription( id, descripcionn );
+    setIsRefreshing(false);
+}
 
   //creación de metodos locales, aqui carga la información de descripción que tenga el usuario
   const loadUser = async() => {
@@ -57,15 +68,25 @@ export default function EditName({ navigation, route }: Props) {
   // Metodo para Actualizar la Descripción
   const UpdateDescription = async() => {
         if( descripcionn.length > 0 ) {            
-          updateUserDescription( id, descripcionn );
+          await updateUserDescription( id, descripcionn );
+          loadProductsFromBackend();
         }
          else {
         }
     }
 
 
+
   return (
-    <View style={styles.containerIndScreen}>
+  <ScrollView
+  refreshControl={
+    <RefreshControl 
+        refreshing={ isRefreshing }
+        onRefresh={ loadProductsFromBackend }
+    />
+      }
+  >
+    <View  style={styles.containerIndScreen} >
        {/* input nombre de Usuario */}
       <View style={styles.containerfield}>
           <TextInput 
@@ -81,7 +102,7 @@ export default function EditName({ navigation, route }: Props) {
                         selectionColor="#9caae8"
 
                         onChangeText={ (value) => onChange(value, 'descripcionn') }
-                        //onSubmitEditing={ onRegister }
+                        //onSubmitEditing={ UpdateDescription }
 
                         autoCapitalize="none"
                         autoCorrect={ false }
@@ -121,14 +142,19 @@ export default function EditName({ navigation, route }: Props) {
                         ...styles.button, width: '100%'}}
                         onPress={ UpdateDescription }
                         >
-                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
+                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>  
                  </TouchableOpacity>
       
         </>    
     }
 
       </View>
+
+        
+
+
       <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
+  </ScrollView>
   )
 }

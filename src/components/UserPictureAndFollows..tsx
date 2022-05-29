@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import {View,Text,Image,StyleSheet,TouchableOpacity,} from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 
-import { AuthContext } from '../context/AuthContext';
+import { UserUpdateContext } from '../context/UserContext';
 
 
 declare module 'react-native-svg' {
@@ -16,8 +16,8 @@ export default function UserPictureAndFollows(props: any) {
 
   const { user } = props;
 
-  //métodos del contex tipo autentificador de Usuario 
-  //const { userA } = useContext( AuthContext );
+  //métodos del contex tipo usuario
+  const { usuario  } = useContext( UserUpdateContext );
 
 
   function SvgProfilePicture() {
@@ -66,7 +66,7 @@ export default function UserPictureAndFollows(props: any) {
             {/* Nombre de Usuario */}
             <View style={styles.container}>
               <View style={styles.UserName}>
-                <Text style={styles.textBold}>{user.username}</Text>             
+                <Text style={styles.textBold}>{usuario?.nombre}</Text>             
               </View>
             </View> 
 

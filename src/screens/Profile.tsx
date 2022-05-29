@@ -12,8 +12,8 @@ export default function Profile() {
   const user = useAppSelector(state => state.user)
 
   return (
-    
-    <SafeAreaView style={{backgroundColor: '#fff', flex: 1}} >
+    <ScrollView>
+      <SafeAreaView style={{backgroundColor: '#fff', flex: 1}} >
       <ScrollView>
         <UserPictureAndFollows  user= {user}/>
         <UserInfo  user= {user}/>
@@ -22,5 +22,8 @@ export default function Profile() {
         <UserPostProfile/>
       </ScrollView>
     </SafeAreaView>
+    </ScrollView>
+    
+    
   )
 }

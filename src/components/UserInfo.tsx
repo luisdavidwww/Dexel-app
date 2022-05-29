@@ -2,22 +2,24 @@ import React, { useContext } from 'react'
 import { View, Text, Image, StyleSheet, TouchableOpacity, } from "react-native";
 
 import { AuthContext } from '../context/AuthContext';
+import { UserUpdateContext } from '../context/UserContext';
 
 //Información del Usuario
 export default function UserInfo(props: any) {
 
-    //datos estaticos
-    //const { user } = props;
 
     //métodos del contex tipo autentificador de Usuario 
     const { user } = useContext( AuthContext );
+
+    //métodos del contex tipo usuario
+    const { usuario  } = useContext( UserUpdateContext );
     
 
     return(
         <View style={styles.container}>     
              
             {/* Descripción de Usuario */}
-            <Text style={{}}>{ JSON.stringify( user?.descripcion ).replace(/["']/g, "") }</Text>   
+            <Text style={{}}>{ JSON.stringify( usuario?.descripcion ).replace(/["']/g, "") }</Text>   
 
             {/* 
              <Text style={{paddingTop: 5, marginBottom: 10}}>

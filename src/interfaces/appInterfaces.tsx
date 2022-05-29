@@ -29,3 +29,8 @@ export interface Usuario {
     fechaNac: Date;
     descripcion: string;
 }
+
+export interface UsuarioResponse {
+    total:     number;
+    usuarios: Usuario[];
+}
