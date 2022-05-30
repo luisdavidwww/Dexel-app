@@ -19,16 +19,16 @@ interface Props extends StackScreenProps<UserStackParams, 'EditDescription'>{};
 export default function EditName({ navigation, route }: Props) {
 
 
-  //estado inicial para el pull to refresh
+  //variables para el metodo de refrescar pantalla
   const [ isRefreshing, setIsRefreshing ] = useState( false );
 
-  //variables de las routas que llegan como parámetros
+  ///definimos las variables de las routas que llegan como parámetros dela pestaña "Editar Perfil"
   const { id = '', descripcion = '' } = route.params;
 
   //métodos del contex tipo usuario
   const { loadUserById, updateUserDescription  } = useContext( UserUpdateContext );
 
-  //variables de apoyo del useForm
+  //variables de apoyo del formulario
   const { onChange, setFormValue, descripcionn, form } = useForm({
    _id: id,
    descripcionn: descripcion 
@@ -46,8 +46,8 @@ export default function EditName({ navigation, route }: Props) {
   }, [])
 
 
-  //pull to refresh
-  const loadProductsFromBackend = async() => {
+  //método que actualiza al usuario
+  const loadUserFromBackend = async() => {
     setIsRefreshing(true);
     await loadUserById(id);
     updateUserDescription( id, descripcionn );
@@ -69,7 +69,7 @@ export default function EditName({ navigation, route }: Props) {
   const UpdateDescription = async() => {
         if( descripcionn.length > 0 ) {            
           await updateUserDescription( id, descripcionn );
-          loadProductsFromBackend();
+          loadUserFromBackend();
         }
          else {
         }
@@ -82,7 +82,7 @@ export default function EditName({ navigation, route }: Props) {
   refreshControl={
     <RefreshControl 
         refreshing={ isRefreshing }
-        onRefresh={ loadProductsFromBackend }
+        onRefresh={ loadUserFromBackend }
     />
       }
   >
@@ -149,11 +149,6 @@ export default function EditName({ navigation, route }: Props) {
     }
 
       </View>
-
-        
-
-
-      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
   </ScrollView>
   )

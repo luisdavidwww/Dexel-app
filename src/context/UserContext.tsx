@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext, useReducer } from 'react';
 import { Usuario, UsuarioResponse } from '../interfaces/appInterfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ImagePickerResponse } from 'react-native-image-picker';
 
 
 import { AuthContext } from '../context/AuthContext';
@@ -14,6 +15,7 @@ import { useDispatch } from 'react-redux';
 type UserUpdateContextProps = {
     usuario: Usuario | null;
     updateUser: ( UserId: string, Name: string) => Promise<void>;
+    updateUserName: ( UserId: string, Nombre: string) => Promise<void>;
     updateUserNameReal: ( UserId: string, Nombre: string) => Promise<void>;
     updateUserDescription: ( UserId: string, Description: string) => Promise<void>;
     updateUserApellido: ( UserId: string, Apellido: string) => Promise<void>;
@@ -67,6 +69,21 @@ export const UserProvider = ({ children }: any ) => {
 
 
     // Actualizar Usuario Nombre
+    const updateUserName = async( UserId: string, Nombre: string ) =>{
+        const resp = await DexelApi.put<Usuario>(`/usuarios/${ UserId }`, {
+            uid:UserId,
+            nombre: Nombre
+        });
+        setUser( usuario => {
+            return (usuario?.uid === UserId )
+                    ? resp.data
+                    : usuario;
+        });
+        
+    }
+
+
+    // Actualizar Usuario Nombre Real
     const updateUserNameReal = async( UserId: string, Nombre: string ) =>{
         const resp = await DexelApi.put<Usuario>(`/usuarios/${ UserId }`, {
             uid:UserId,
@@ -127,6 +144,26 @@ export const UserProvider = ({ children }: any ) => {
 
     // TODO: cambiar ANY
     const uploadImage = async( data: any, id: string ) => {
+        const fileToUpload = {
+            uri: data.uri,
+            type: data.type,
+            name: data.fileName
+        }
+
+
+        console.log("el nuevo");
+        console.log(fileToUpload);
+
+        const formData = new FormData();
+        formData.append('archivo', fileToUpload);
+        console.log(formData);
+
+        try {
+            const resp = await DexelApi.put(`/uploads/usuarios/${ id }`, formData )
+            console.log(resp);
+        } catch (error) {
+            console.log({ error })
+        }
         
     }
 
@@ -137,6 +174,7 @@ export const UserProvider = ({ children }: any ) => {
     return(
         <UserUpdateContext.Provider value={{
             usuario,
+            updateUserName,
             updateUserNameReal,
             updateUserApellido,
             updateUserDescription,

@@ -21,16 +21,16 @@ export default function EditName({ navigation, route }: Props) {
 
 
 
-  //estado inicial para el pull to refresh
+  //variables para el metodo de refrescar pantalla
   const [ isRefreshing, setIsRefreshing ] = useState( false );
 
-  //variables de las routas qyue llegan como parámetros
+  //definimos las variables de las routas que llegan como parámetros dela pestaña "Editar Perfil"
   const { id = '', Surname = '' } = route.params;
 
-  //métodos del contex tipo usuario, cargar usuario por Id
+  //métodos del contex tipo usuario
   const { loadUserById, updateUserApellido  } = useContext( UserUpdateContext );
 
-  //variables de apoyo del useForm
+  //variables de apoyo del formulario
   const { apellido, onChange, setFormValue, form } = useForm({
    _id: id,
    apellido: Surname 
@@ -48,15 +48,15 @@ export default function EditName({ navigation, route }: Props) {
   }, [])
 
   useEffect(() => {
-    loadProductsFromBackend()
+    loadUserFromBackend()
   }, [])
 
 
 
 
 
-  //pull to refresh
-  const loadProductsFromBackend = async() => {
+  //método que actualiza al usuario
+  const loadUserFromBackend = async() => {
     setIsRefreshing(true);
     await loadUserById(id);
     updateUserApellido( id, apellido );
@@ -65,24 +65,11 @@ export default function EditName({ navigation, route }: Props) {
 
 
 
-
-//creación de metodos locales, aqui carga la información de apellido que tenga el usuario
-  const loadUser = async() => {
-      if ( id.length === 0 ) return;
-      const user = await loadUserById( id );
-        setFormValue({
-          _id: user.uid,
-          apellido
-           })
-        }
-
-
-
   // Metodo para Actualizar el Apellido
   const UpdateApellido = async() => {
     if( apellido.length > 0 ) {            
       await updateUserApellido( id, apellido );
-      loadProductsFromBackend();
+      loadUserFromBackend();
     }
      else {
     }
@@ -97,7 +84,7 @@ export default function EditName({ navigation, route }: Props) {
   refreshControl={
     <RefreshControl 
         refreshing={ isRefreshing }
-        onRefresh={ loadProductsFromBackend }
+        onRefresh={ loadUserFromBackend }
     />
       }
   >
@@ -161,11 +148,6 @@ export default function EditName({ navigation, route }: Props) {
     }
 
       </View>
-
-        
-
-
-      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
 
         

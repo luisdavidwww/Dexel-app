@@ -1,5 +1,5 @@
-import React, { useEffect, useContext } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput } from 'react-native';
+import React, { useEffect, useContext, useState } from 'react'
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Keyboard, TextInput, RefreshControl } from 'react-native';
 import { useForm } from '../../../hooks/useForm';
 
 import { UserUpdateContext } from '../../../context/UserContext';
@@ -19,13 +19,16 @@ interface Props extends StackScreenProps<UserStackParams, 'EditNameUser'>{};
 
 export default function EditName({ navigation, route }: Props) {
 
-  //variables de las routas qyue llegan como parámetros
+  //variables para el metodo de refrescar pantalla
+  const [ isRefreshing, setIsRefreshing ] = useState( false );
+
+  //definimos las variables de las routas que llegan como parámetros dela pestaña "Editar Perfil"
   const { id = '', NameUser = '' } = route.params;
 
-  //métodos del contex tipo usuario, cargar usuario por Id
-  const { loadUserById  } = useContext( UserUpdateContext );
+  //métodos del contex tipo usuario
+  const { loadUserById, updateUserName  } = useContext( UserUpdateContext );
 
-  //variables de apoyo del useForm
+  //variables de apoyo del formulario
   const { nombre, onChange, setFormValue, form } = useForm({
    _id: id,
    nombre: NameUser
@@ -39,20 +42,43 @@ export default function EditName({ navigation, route }: Props) {
         title: 'Nombre de Usuario',
     })
   }, [])
-
   useEffect(() => {
-    loadUser();
+    loadUserFromBackend();
+  }, [])
+  useEffect(() => {
+    UpdateName();
   }, [])
     
-    
-  //creación de metodos locales, aqui carga la información de nombre de usuario que tenga el usuario
-  const loadUser = async() => {
-      if ( id.length === 0 ) return;
-      const user = await loadUserById( id );
-      //console.log (user)
-        }
+
+  //método que actualiza al usuario
+  const loadUserFromBackend = async() => {
+    setIsRefreshing(true);
+    await loadUserById(id);
+    updateUserName( id, nombre );
+    setIsRefreshing(false);
+    }
+
+  // Metodo para Actualizar el Nombre de usuario
+  const UpdateName = async() => {
+    if( nombre.length > 0 ) {            
+      await updateUserName( id, nombre );
+      loadUserFromBackend();
+    }
+     else {
+    }
+}
+
 
   return (
+
+    <ScrollView
+    refreshControl={
+      <RefreshControl 
+          refreshing={ isRefreshing }
+          onRefresh={ loadUserFromBackend }
+      />
+        }
+    >
     <View style={styles.containerIndScreen}>
 
        {/* input nombre de Usuario */}
@@ -91,14 +117,30 @@ export default function EditName({ navigation, route }: Props) {
 
       {/* btn Guardar Cambios */}
       <View style={styles.containerfield}>
-         <TouchableOpacity style={{
-               ...styles.button, width: '100%'}}
-               //onPress={ onRegister }
-               >
-            <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>
-         </TouchableOpacity>
+
+
+      {NameUser === nombre
+      ? <>
+                  <TouchableOpacity style={{
+                        ...styles.buttonDisable, width: '100%'}}
+                        disabled={true}
+                        >
+                     <Text style={{...styles.buttonText,color:'#60605f'}}>Guardar</Text>
+                  </TouchableOpacity>
+        </>
+      : <>
+                 <TouchableOpacity style={{
+                        ...styles.button, width: '100%'}}
+                        onPress={ UpdateName }
+                        >
+                      <Text style={{...styles.buttonText,color:'white'}}>Guardar</Text>  
+                 </TouchableOpacity>
+      
+        </>    
+    }
+
       </View>
-      <Text> { JSON.stringify( form ).replace(/["']/g, "") }</Text>
     </View>
+    </ScrollView>
   )
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, FlatList, Button, RefreshControl } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, Modal, Image, FlatList, Button, RefreshControl } from 'react-native';
+import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { AuthContext } from '../../context/AuthContext';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from "../../Navegation/Navigation";
@@ -7,6 +8,7 @@ import { useNavigation } from '@react-navigation/core';
 import { useForm } from '../../hooks/useForm';
 import { UserUpdateContext } from '../../context/UserContext';
 
+//estilos
 import { styles } from '../../theme/optionsTheme';
 
 //icon
@@ -21,32 +23,45 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { UserStackParams } from '../../Navegation/UserNavigation';
 
 
+//aquí llamo a los parametros de pantallas
 interface Props extends StackScreenProps<UserStackParams>{}; 
 
 
 export default function EditProfile({ navigation }: Props) {
 
+   //funcion estilo para la foto de Perfil
+   function SvgProfilePicture() {
+      return (
+        <Svg
+          width={88}
+          height={88}
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+        </Svg>
+      )
+    }
+
 
   //variable de navegación 
   const navigator = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-
-
-  //variables para el metodo de refrescar
+  //variables para el metodo de refrescar pantalla
   const [ isRefreshing, setIsRefreshing ] = useState( false );
 
+
   //métodos del contex tipo usuario
-  const { loadUserById, updateUserDescription, updateUserApellido, updateUserNameReal, usuario  } = useContext( UserUpdateContext );
+  const { loadUserById, updateUserDescription, updateUserApellido, updateUserNameReal, updateUserName, usuario  } = useContext( UserUpdateContext );
 
   //métodos del contex tipo autentificador de Usuario 
   const { user, signIn } = useContext( AuthContext );
 
 
 
-
-  //variables de apoyo del useForm
+  //variables de apoyo del formulario
   const { onChange, img, descripcion, apellido } = useForm({
    _id: user?.uid,
+   nombre:'',
    descripcion: '',
    apellido: '',
    img: ''
@@ -62,29 +77,28 @@ export default function EditProfile({ navigation }: Props) {
     })
    }, [])
    useEffect(() => {
-      loadProductsFromBackend();
+      loadUserFromBackend();
     }, [])
 
 
 
-
-
-
-
     //método que actualiza al usuario
-    const loadProductsFromBackend = async() => {
+    const loadUserFromBackend = async() => {
       setIsRefreshing(true);
       const _id= user?.uid
       const usuario = await loadUserById( _id )
       
-      await updateUserDescription( _id, usuario.descripcion );
-      await updateUserApellido( _id, usuario.apellido );
-      await updateUserNameReal( _id, usuario.nombreReal );
+      //await updateUserDescription( _id, usuario.descripcion );
+      //await updateUserApellido( _id, usuario.apellido );
+      //await updateUserNameReal( _id, usuario.nombreReal );
+      await updateUserName( _id, usuario.nombre );
 
       setIsRefreshing(false);
+      console.log("-----------------------------------------------------------------------------------------------");
+      console.log(usuario.nombre);
       console.log(usuario.nombreReal);
       console.log(usuario.apellido);
-      console.log(usuario.descripcion);
+      console.log(usuario.descripcion);    
    }
 
 
@@ -96,24 +110,11 @@ export default function EditProfile({ navigation }: Props) {
   refreshControl={
     <RefreshControl 
         refreshing={ isRefreshing }
-        onRefresh={ loadProductsFromBackend }
+        onRefresh={ loadUserFromBackend }
     />
       }
   >
     <View style={styles.container}>
-                        {/* Foto de Perfil */}
-                        {
-                          (img.length > 0) && (
-                            <Image 
-                              source={{ uri: img }}
-                              style={{
-                                marginTop: 20,
-                                width: '100%',
-                                height: 300
-                                }}
-                            />
-                          )
-                        }
 
       {/* Nombre de Usuario */}
       <TouchableOpacity onPress={ () => navigation.navigate('EditNameUser', { id:user?.uid, NameUser: usuario?.nombre} )} activeOpacity={0.6}>

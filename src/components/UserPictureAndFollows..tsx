@@ -1,8 +1,12 @@
-import React, { useContext } from 'react'
-import {View,Text,Image,StyleSheet,TouchableOpacity,} from "react-native";
+import React, { useContext, useState } from 'react'
+import {View,Text,Image,StyleSheet,TouchableOpacity, Modal, Button} from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
-
+import { ItemSeparator } from '../components/ItemSeparator';
 import { UserUpdateContext } from '../context/UserContext';
+
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
+
 
 
 declare module 'react-native-svg' {
@@ -17,7 +21,13 @@ export default function UserPictureAndFollows(props: any) {
   const { user } = props;
 
   //métodos del contex tipo usuario
-  const { usuario  } = useContext( UserUpdateContext );
+  const { usuario, uploadImage } = useContext( UserUpdateContext );
+
+  //variables para el modal 
+  const [isVisible, setIsVisible] = useState(false);
+
+  //tomar foto
+  const [pickedImagePath, setPickedImagePath] = useState<string>()
 
 
   function SvgProfilePicture() {
@@ -49,17 +59,145 @@ export default function UserPictureAndFollows(props: any) {
       </Svg>
     )
   }
+
+
+//Seleccionar una imagén de la galería
+const ImageGallery = async () => {
+  let result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    allowsEditing: true,
+    aspect: [4, 3],
+    quality: 1,
+  });
+  console.log("---------------------------------------------------------------------------*/*/*/*/*/");
+  console.log(result);
+  uploadImage( result, usuario?.uid );
+};
+
+
+//Abrir la camara
+const openCamera = async () => {
+  
+  const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+  if (permissionResult.granted === false) {
+    alert("You've refused to allow this appp to access your camera!");
+    return;
+  }
+
+  const result = await ImagePicker.launchCameraAsync();
+
+  // Explore the result
+  console.log(result);
+  uploadImage( result, usuario?.uid );
+
+  if (!result.cancelled) {
+    setPickedImagePath(result.uri);
+    uploadImage( result, usuario?.uid );
+  }
+}
+
+
         return (
           <View>
 
+            {/* TODO: Mostrar imagen temporal */}
+            {
+                    ( pickedImagePath ) && (
+                        <Image 
+                            source={{ uri: pickedImagePath }}
+                            style={{
+                                marginTop: 20,
+                                width: '100%',
+                                height: 300
+                            }}
+                        />
+                    )
+                }
+
              {/* Foto de Perfil */}
             <View style={styles.container}>
-              <TouchableOpacity style={styles.containerPicture}>
+              <TouchableOpacity style={styles.containerPicture} onPress={ () => setIsVisible(true)} >
                 <SvgProfilePicture />
                 <Image
                     style={styles.userPicture}
-                    source={{uri: user.profilePicture}}
-                />                
+                    source={{uri: usuario?.img}}
+                />
+                {/* El Modal esla ventana emergente de opciones  */}
+                <Modal
+                animationType="fade"
+                visible={ isVisible }
+                transparent={ true }
+                >
+
+                {/* Background negro */}
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(0,0,0,0.3)',
+                    justifyContent: 'flex-end',
+                    alignItems: 'center'
+                }}>
+
+                    {/* Contenido del modal */}
+                    <View style={{
+                        width: "100%",
+                        height: 200,
+                        backgroundColor: 'white',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        shadowOffset: {
+                            width: 0,
+                            height: 10
+                        },
+                        shadowOpacity: 0.25,
+                        elevation: 10,
+                        borderRadius: 5
+                    }}>
+                       <View style={{ flex: 1, paddingTop:20, alignItems: 'center'}}>
+
+                         {/* Hacer Una foto */}
+                         <TouchableOpacity onPress={ () => openCamera() }>
+                          <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 10 }}>
+                              Hacer Una foto
+                          </Text>
+                        </TouchableOpacity>
+
+                        {/* Item Separador */}
+                        <View
+                           style={{
+                           borderBottomWidth: 1,
+                           opacity: 0.1,
+                           width:500,
+                           marginVertical: 4,
+                          }}
+                        />
+                        
+
+                        {/* Seleccionar una foto de la galería */}
+                        <TouchableOpacity onPress={ () => ImageGallery() }>
+                          <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 10}}>
+                              Seleccionar una foto de la galería
+                          </Text>
+                        </TouchableOpacity>
+
+                       {/* Item Separador */}
+                        <View
+                           style={{
+                           borderBottomWidth: 1,
+                           opacity: 0.1,
+                           width:500,
+                           marginVertical: 4,
+                          }}
+                        />
+
+                        {/* Cerrar */}
+                        <TouchableOpacity onPress={ () => setIsVisible(false) }>
+                          <Text style={{ fontSize: 16, fontWeight: '300', marginBottom: 10, marginTop: 10, opacity: 0.4 }} >Cerrar</Text>
+                        </TouchableOpacity>
+                       </View>
+                    </View>
+                </View>
+            </Modal>               
               </TouchableOpacity>
             </View>
             

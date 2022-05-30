@@ -3,9 +3,10 @@ import { View, Text, StyleSheet} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { AuthContext } from '../context/AuthContext';
-import { useAppSelector } from '../redux/Hooks';
+import { UserUpdateContext } from '../context/UserContext';
 
 import MaterialIcons from '@expo/vector-icons/Ionicons';
+import { Usuario } from '../interfaces/appInterfaces';
  
 
 //Cabecera de la seccion de Perfil
@@ -14,12 +15,14 @@ export default function ProfileHeader() {
     
     const { user } = useContext( AuthContext );
 
-    //const user = useAppSelector(state => state.user)
+    //métodos del contex tipo usuario
+  const { usuario  } = useContext( UserUpdateContext );
+
 
     return (
         <View style={styles.container}>
             {/* Nombre de Usuario */}
-            <Text style={styles.title}>{ JSON.stringify( user?.nombre ).replace(/["']/g, "") }</Text>
+            <Text style={styles.title}>{ JSON.stringify( usuario?.nombre ).replace(/["']/g, "") }</Text>
             {/* Menú de Opciones */}
             <TouchableOpacity activeOpacity={0.6} style={{flexDirection: 'row'}}>
                 <MaterialIcons name="menu-outline" color="black" size={28}></MaterialIcons>
@@ -35,7 +38,7 @@ const styles = StyleSheet.create({
         justifyContent: "space-between"
     },
     title: {
-        fontSize: 25,
+        fontSize: 21,
         fontWeight: "bold",
     }
 });
