@@ -34,6 +34,7 @@ import EditDescription from '../screens/EditProfile/indScreens/EditDescription'
 import HeaderHome from "../components/HeaderHome";
 import ProfileHeader from "../components/ProfileHeader";
 import { enableScreens } from "react-native-screens";
+import RequestFollowers from '../screens/RequestFollowers';
 
 
 //parametros globales para la navegacion
@@ -44,6 +45,7 @@ export type RootStackParamList = {
   EditDescription: { id: string };
   Setting: { id: string };
   EditProfile: { id: string };
+  RequestFollowers: { id: string }
 };
 
 const Tab = createBottomTabNavigator();
@@ -164,6 +166,9 @@ export const StackNavegator = () => {
 
               {/* Screens Configuración */}
               <Stack.Screen name="Setting"  component={ Setting } />
+
+               {/* Screens Solicitud de amistad */}
+              <Stack.Screen name="RequestFollowers" component={RequestFollowers} />
             </>
           )
       }
@@ -204,7 +209,7 @@ const StackExplore = () => {
       },
       headerTitleAlign: 'center',
   })}>
-      <Stack.Screen name="Explore" component={ Explore } />
+      <Stack.Screen name="Explore" options={{headerShown: false}} component={ Explore } />
     </Stack.Navigator>
   );
 }
@@ -213,8 +218,9 @@ const StackNew = () => {
     <Stack.Navigator
     screenOptions={() => ({
       cardStyle: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
       },
+      
       headerTitleAlign: 'center',
   })}>
       <Stack.Screen name="New" component={ New } />

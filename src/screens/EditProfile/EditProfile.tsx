@@ -59,12 +59,11 @@ export default function EditProfile({ navigation }: Props) {
 
 
   //variables de apoyo del formulario
-  const { onChange, img, descripcion, apellido } = useForm({
+  const { onChange, descripcion, apellido } = useForm({
    _id: user?.uid,
    nombre:'',
    descripcion: '',
-   apellido: '',
-   img: ''
+   apellido: ''
   });
 
 
@@ -85,13 +84,15 @@ export default function EditProfile({ navigation }: Props) {
     //método que actualiza al usuario
     const loadUserFromBackend = async() => {
       setIsRefreshing(true);
-      const _id= user?.uid
+      
+      const _id :string = user?.uid || '';
+      //const _id= user?.uid;
       const usuario = await loadUserById( _id )
       
       //await updateUserDescription( _id, usuario.descripcion );
       //await updateUserApellido( _id, usuario.apellido );
       //await updateUserNameReal( _id, usuario.nombreReal );
-      await updateUserName( _id, usuario.nombre );
+      //await updateUserName( _id, usuario.nombre );
 
       setIsRefreshing(false);
       console.log("-----------------------------------------------------------------------------------------------");
@@ -99,6 +100,7 @@ export default function EditProfile({ navigation }: Props) {
       console.log(usuario.nombreReal);
       console.log(usuario.apellido);
       console.log(usuario.descripcion);    
+      console.log(usuario.img);
    }
 
 

@@ -1,9 +1,11 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'http://192.168.1.105:8080/api';
+const baseURL = 'http://192.168.1.106:8080/api';//http://10.0.2.2:8080/api
+
 
 const DexelApi = axios.create({ baseURL });
+
 
 
 DexelApi.interceptors.request.use(
@@ -19,5 +21,7 @@ DexelApi.interceptors.request.use(
         return config;
     }
 );
+
+
 
 export default DexelApi;

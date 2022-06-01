@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {View,Text,Image,StyleSheet,TouchableOpacity, Modal, Button} from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import { ItemSeparator } from '../components/ItemSeparator';
 import { UserUpdateContext } from '../context/UserContext';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+//import ImagePicker from 'react-native-image-picker'
 import * as ImagePicker from 'expo-image-picker';
 
 
@@ -18,10 +19,14 @@ declare module 'react-native-svg' {
 
 export default function UserPictureAndFollows(props: any) {
 
+
   const { user } = props;
 
+   //variables para el metodo de refrescar pantalla
+   const [ isRefreshing, setIsRefreshing ] = useState( false );
+
   //métodos del contex tipo usuario
-  const { usuario, uploadImage } = useContext( UserUpdateContext );
+  const { usuario, uploadImage, loadUserById } = useContext( UserUpdateContext );
 
   //variables para el modal 
   const [isVisible, setIsVisible] = useState(false);
@@ -30,6 +35,7 @@ export default function UserPictureAndFollows(props: any) {
   const [pickedImagePath, setPickedImagePath] = useState<string>()
 
 
+  //vector parafoto de perfil
   function SvgProfilePicture() {
     return (
       <Svg
@@ -61,17 +67,39 @@ export default function UserPictureAndFollows(props: any) {
   }
 
 
+
+/*const takePhoto = () => {
+  launchCamera({
+      mediaType: 'photo',
+      quality: 0.5
+  }, (resp) => {
+      if ( resp.didCancel ) return;
+      if( !resp.uri ) return;
+
+      setPickedImagePath( resp.uri );
+      console.log(resp);
+      uploadImage( resp, usuario?.uid );
+  });
+}*/
+
+
+
 //Seleccionar una imagén de la galería
 const ImageGallery = async () => {
   let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.All,
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
-    aspect: [4, 3],
-    quality: 1,
+    aspect: [4, 4],
+    quality: 0.5,
   });
-  console.log("---------------------------------------------------------------------------*/*/*/*/*/");
-  console.log(result);
-  uploadImage( result, usuario?.uid );
+
+  if (!result.cancelled) {
+    setPickedImagePath(result.uri);
+
+    const _id :string = usuario?.uid || '';
+    uploadImage( result, _id );
+    setIsVisible(false);
+  }
 };
 
 
@@ -85,17 +113,24 @@ const openCamera = async () => {
     return;
   }
 
-  const result = await ImagePicker.launchCameraAsync();
-
-  // Explore the result
-  console.log(result);
-  uploadImage( result, usuario?.uid );
+  const result = await ImagePicker.launchCameraAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [4, 4],
+    quality: 0.5,
+  });
 
   if (!result.cancelled) {
     setPickedImagePath(result.uri);
-    uploadImage( result, usuario?.uid );
+    
+    const _id :string = usuario?.uid || '';
+    uploadImage( result, _id );
+    setIsVisible(false);
   }
+
 }
+
+
 
 
         return (
@@ -121,7 +156,7 @@ const openCamera = async () => {
                 <SvgProfilePicture />
                 <Image
                     style={styles.userPicture}
-                    source={{uri: usuario?.img}}
+                    source={{uri: user?.img}}
                 />
                 {/* El Modal esla ventana emergente de opciones  */}
                 <Modal
@@ -160,6 +195,7 @@ const openCamera = async () => {
                           <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 10 }}>
                               Hacer Una foto
                           </Text>
+                           
                         </TouchableOpacity>
 
                         {/* Item Separador */}
@@ -174,7 +210,7 @@ const openCamera = async () => {
                         
 
                         {/* Seleccionar una foto de la galería */}
-                        <TouchableOpacity onPress={ () => ImageGallery() }>
+                        <TouchableOpacity onPress={ () => ImageGallery() } >
                           <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 10, marginTop: 10}}>
                               Seleccionar una foto de la galería
                           </Text>
@@ -200,6 +236,7 @@ const openCamera = async () => {
             </Modal>               
               </TouchableOpacity>
             </View>
+
             
             {/* Nombre de Usuario */}
             <View style={styles.container}>
@@ -210,16 +247,16 @@ const openCamera = async () => {
 
             <View style={styles.container}>
               <View style={styles.followsContainer}>
-                <Text style={styles.textBold}>{user.posts}</Text>
+                <Text style={styles.textBold}>01</Text>
                 <Text>Post</Text>                
               </View>
               <View style={styles.followsContainer}>
-                <Text style={styles.textBold}>{user.follers}</Text>
-                <Text>Followers</Text>               
+                <Text style={styles.textBold}>02</Text>
+                <Text>Seguidores</Text>               
               </View>
               <View style={styles.followsContainer}>
-                <Text style={styles.textBold}>{user.following}</Text>
-                <Text>Following</Text>             
+                <Text style={styles.textBold}>03</Text>
+                <Text>Siguiendo</Text>             
               </View>
             </View>         
         </View>
@@ -227,6 +264,7 @@ const openCamera = async () => {
         )
 
 }
+
 
 const styles = StyleSheet.create({
     userPicture: {

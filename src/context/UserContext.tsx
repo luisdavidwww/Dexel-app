@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, useReducer } fro
 import { Usuario, UsuarioResponse } from '../interfaces/appInterfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ImagePickerResponse } from 'react-native-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 
 import { AuthContext } from '../context/AuthContext';
@@ -21,6 +22,7 @@ type UserUpdateContextProps = {
     updateUserApellido: ( UserId: string, Apellido: string) => Promise<void>;
     loadUserById: ( id: string ) => Promise<Usuario>;
     uploadImage: ( data: any, id: string ) => Promise<void>; // TODO: cambiar ANY
+    updateUserImgProfile: ( UserId: string, Img: string) => Promise<void>;
 }
 
 
@@ -143,23 +145,28 @@ export const UserProvider = ({ children }: any ) => {
 
 
     // TODO: cambiar ANY
-    const uploadImage = async( data: any, id: string ) => {
+    const uploadImage = async( data: ImagePicker.ImageInfo, id: string ) => {
         const fileToUpload = {
             uri: data.uri,
-            type: data.type,
-            name: data.fileName
+            type: 'multipart/form-data', //image 
+            name: data.uri
         }
 
-
-        console.log("el nuevo");
-        console.log(fileToUpload);
-
         const formData = new FormData();
-        formData.append('archivo', fileToUpload);
+        formData.append('archivo', fileToUpload )
         console.log(formData);
 
+        /*DexelApi.interceptors.request.use(request => {
+            console.log('Starting Request', JSON.stringify(request, null, 2))
+            return request
+          })*/
+
         try {
-            const resp = await DexelApi.put(`/uploads/usuarios/${ id }`, formData )
+            const resp = await DexelApi.put(`/uploads/usuarios/${ id }`, formData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                }
+              });
             console.log(resp);
         } catch (error) {
             console.log({ error })
@@ -167,7 +174,19 @@ export const UserProvider = ({ children }: any ) => {
         
     }
 
-
+    // Actualizar link de imagen deperfil
+    const updateUserImgProfile = async( UserId: string, Img: string ) =>{
+        const resp = await DexelApi.put<Usuario>(`/usuarios/${ UserId }`, {
+            uid:UserId,
+            img: Img
+        });
+        setUser( usuario => {
+            return (usuario?.uid === UserId )
+                    ? resp.data
+                    : usuario;
+        });
+        
+    }
 
 
 
@@ -180,6 +199,7 @@ export const UserProvider = ({ children }: any ) => {
             updateUserDescription,
             loadUserById,
             uploadImage,
+            updateUserImgProfile,
         }}>
             { children }
         </UserUpdateContext.Provider>
