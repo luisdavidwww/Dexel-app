@@ -122,7 +122,7 @@ const openCamera = async () => {
 
   if (!result.cancelled) {
     setPickedImagePath(result.uri);
-    
+
     const _id :string = usuario?.uid || '';
     uploadImage( result, _id );
     setIsVisible(false);
@@ -135,21 +135,6 @@ const openCamera = async () => {
 
         return (
           <View>
-
-            {/* TODO: Mostrar imagen temporal */}
-            {
-                    ( pickedImagePath ) && (
-                        <Image 
-                            source={{ uri: pickedImagePath }}
-                            style={{
-                                marginTop: 20,
-                                width: '100%',
-                                height: 300
-                            }}
-                        />
-                    )
-                }
-
              {/* Foto de Perfil */}
             <View style={styles.container}>
               <TouchableOpacity style={styles.containerPicture} onPress={ () => setIsVisible(true)} >

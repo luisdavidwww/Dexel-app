@@ -55,6 +55,7 @@ export default function ButtonComponent(props: any) {
 
   if (!result.cancelled) {
     setPickedImagePath(result.uri);
+    console.log(result.uri)
     
     const _id :string = usuario?.uid || '';
     //uploadImage( result, _id );
@@ -73,6 +74,7 @@ const ImageGallery = async () => {
 
   if (!result.cancelled) {
     setPickedImagePath(result.uri);
+    console.log(result.uri)
     const _id :string = usuario?.uid || '';
     //uploadImage( result, _id );
   }
@@ -115,24 +117,27 @@ const ImageGallery = async () => {
                         elevation: 10,
                         borderRadius: 5
                     }}>
+                      
+                        {/* TODO: Mostrar imagen temporal */}
+            {
+                    ( pickedImagePath ) && (
+                        <Image 
+                        
+                            source={{ uri: pickedImagePath }}
+                            style={{
+                                marginTop: 10,
+                                width: '90%',
+                                height: '45%'
+                            }}
+                        />
+                        
+                    )
+                }
 
 
                       <View style={{ flex: 1, paddingTop:20, alignItems: 'center'}}>
 
 
-                        {/* TODO: Mostrar imagen temporal */}
-            {
-                    ( pickedImagePath ) && (
-                        <Image 
-                            source={{ uri: pickedImagePath }}
-                            style={{
-                                marginTop: 20,
-                                width: '100%',
-                                height: 300
-                            }}
-                        />
-                    )
-                }
 
 
 
@@ -142,6 +147,23 @@ const ImageGallery = async () => {
                               camarita
                           </Text>
                         </TouchableOpacity>
+
+
+                        {pickedImagePath === "hi"
+                          ? <>
+                           <TouchableOpacity style={{
+                         width: '100%'}}
+                         onPress={ () => setPickedImagePath("hi") }
+                        >
+                      <Text style={{...styles.buttonV2,color:'white'}}>eliminar</Text>  
+                 </TouchableOpacity>
+        </>
+      : <>
+                      <Text> </Text>  
+
+      
+        </>    
+    }
 
 
 
