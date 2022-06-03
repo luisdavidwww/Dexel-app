@@ -14,7 +14,7 @@ import { Fontisto } from '@expo/vector-icons';
 
 export default function EditProfile(props: any) {
 
-  const { logOut } = useContext( AuthContext );
+  const { logOut, user } = useContext( AuthContext );
 
   useEffect(() => {
     navigation.setOptions({
@@ -23,6 +23,14 @@ export default function EditProfile(props: any) {
 }, [])
 
   //const { user } = props;   
+
+  const UpdateDescription = () => {
+    if( user?.uid ) {          
+      logOut;
+    }
+     else {
+    }
+}
 
   const navigation = useNavigation();
 
